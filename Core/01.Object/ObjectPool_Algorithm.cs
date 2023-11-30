@@ -43,12 +43,12 @@ public partial class ObjectPool : Singleton<ObjectPool>
         {
             PoolObject createdObject = Object.Instantiate<GameObject>(baseObject).AddComponent<PoolObject>();
             if (typeof(T) == createdObject.gameObject.GetType())
-                createdObject.cachedObject = createdObject.cachedGameObject;
+                createdObject.cachedObject = createdObject.CachedGo;
             else
                 createdObject.cachedObject = createdObject.GetComponent<T>();
             createdObject.name = objectName;
             createdObject.isDynamicPoolObject = isDynamicPool;
-            createdObject.cachedTransform.SetParent(recycleTargetParent);
+            createdObject.CachedTf.SetParent(recycleTargetParent);
             poolObjectList.Add(createdObject);
             currentNotUsingpoolObject.Add(createdObject);
         }
@@ -77,7 +77,7 @@ public partial class ObjectPool : Singleton<ObjectPool>
         {
             PoolObject createdPoolObject = Object.Instantiate(m_basePrefabDictionary[poolName]).AddComponent<PoolObject>();
             if (typeof(T) == createdPoolObject.gameObject.GetType())
-                createdPoolObject.cachedObject = createdPoolObject.cachedGameObject;
+                createdPoolObject.cachedObject = createdPoolObject.CachedGo;
             else
                 createdPoolObject.cachedObject = createdPoolObject.GetComponent<T>();
             createdPoolObject.name = poolName;
@@ -87,14 +87,14 @@ public partial class ObjectPool : Singleton<ObjectPool>
 #endif
         }
 
-        Transform objectAsTransform = poolObject.cachedTransform;
-        GameObject objectAsGameObject = poolObject.cachedGameObject;
+        Transform objectAsTransform = poolObject.CachedTf;
+        GameObject objectAsGameObject = poolObject.CachedGo;
         objectAsTransform.SetParent(parent);
         objectAsTransform.localPosition = localPosition;
         if (origin)
         {
-            objectAsTransform.localEulerAngles = poolObject.cachedTransform.localEulerAngles;
-            objectAsTransform.localScale = poolObject.cachedTransform.localScale;
+            objectAsTransform.localEulerAngles = poolObject.CachedTf.localEulerAngles;
+            objectAsTransform.localScale = poolObject.CachedTf.localScale;
         }
         else
         {
@@ -143,8 +143,8 @@ public partial class ObjectPool : Singleton<ObjectPool>
             else
                 recycleTargetParent = cachedObjectRecycleTargetTransform;
 
-            targetRecycleObject.cachedTransform.SetParent(recycleTargetParent);
-            targetRecycleObject.cachedTransform.localPosition = Vector3.zero;
+            targetRecycleObject.CachedTf.SetParent(recycleTargetParent);
+            targetRecycleObject.CachedTf.localPosition = Vector3.zero;
             currentUsingPoolList.Remove(targetRecycleObject);
             currentNotUsingPoolDictionary[poolName].Add(targetRecycleObject);
         }

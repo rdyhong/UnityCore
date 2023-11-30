@@ -9,7 +9,7 @@ using System.Text.RegularExpressions;
 using UnityEngine;
 using Random = System.Random;
 
-public static class Util
+public static class GameUtil
 {
     /// <summary>
     /// Get random Success in 0 to 1
@@ -180,7 +180,7 @@ public static class Util
 
         if (Application.internetReachability == NetworkReachability.NotReachable) 
         {
-            DebugMgr.LogErr("Internet Disconnected");
+            DebugUtil.LogErr("Internet Disconnected");
         }
         else if (Application.internetReachability == NetworkReachability.ReachableViaCarrierDataNetwork)
         {

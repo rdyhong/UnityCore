@@ -22,10 +22,10 @@ public class SceneMgr : Singleton<SceneMgr>
     {
         base.Awake();
 
-        gameScenes.Add(SceneKind.Splash, new Splash());
-        gameScenes.Add(SceneKind.Lobby, new Lobby());
-        gameScenes.Add(SceneKind.Title, new Title());
-        gameScenes.Add(SceneKind.InGame, new InGame());
+        //gameScenes.Add(SceneKind.Splash, new Splash());
+        //gameScenes.Add(SceneKind.Title, new Title());
+        //gameScenes.Add(SceneKind.Lobby, new Lobby());
+        //gameScenes.Add(SceneKind.InGame, new InGame());
     }
 
     public void LoadScene(SceneKind sceneKind, LoadCallback callback = null)

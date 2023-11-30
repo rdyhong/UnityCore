@@ -60,18 +60,18 @@ public partial class ObjectPool : Singleton<ObjectPool>
 
     public void CreatePoolInit()
     {
-        DebugMgr.Log("Object Pool Init");
+        DebugUtil.Log("Object Pool Init");
 
         // GameObject
-        CreatePool<Projectile>("Assets/Rdyhong/02_Prefabs/01.Object/Projectile.prefab", 50);
+        //CreatePool<Projectile>("Assets/Rdyhong/02_Prefabs/01.Object/Projectile.prefab", 50);
 
         // UI
-        CreatePool<Content_RoomListEle>("Assets/Rdyhong/02_Prefabs/02.UI/Content_RoomListEle.prefab", 20);
-        CreatePool<Content_RoomPlayerInfo>("Assets/Rdyhong/02_Prefabs/02.UI/Content_RoomPlayerInfo.prefab", 20);
+        //CreatePool<Content_RoomListEle>("Assets/Rdyhong/02_Prefabs/02.UI/Content_RoomListEle.prefab", 20);
+        //CreatePool<Content_RoomPlayerInfo>("Assets/Rdyhong/02_Prefabs/02.UI/Content_RoomPlayerInfo.prefab", 20);
 
         isComplete = true;
 
-        DebugMgr.Log("Complete ::: Create Pool");
+        DebugUtil.Log("Complete ::: Create Pool");
     }
 
     private void CreatePool<T>(string name, int poolCount = 1, bool isDynamicPool = false) where T : UnityEngine.Object
@@ -81,13 +81,13 @@ public partial class ObjectPool : Singleton<ObjectPool>
             GameObject resource = AddressableMgr.loadedGameObj[name];
 
             if (resource == null)
-                DebugMgr.Log("Not Exists ::: " + name);
+                DebugUtil.Log("Not Exists ::: " + name);
             else
                 ObjectPool.CreatePool<T>(resource, poolCount, isDynamicPool);
         }
         catch
         {
-            DebugMgr.Log($"Fail to create pool.({name})");
+            DebugUtil.Log($"Fail to create pool.({name})");
         }
     }
 

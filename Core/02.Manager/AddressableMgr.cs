@@ -32,7 +32,7 @@ public class AddressableMgr : Singleton<AddressableMgr>
             
             if (queue.Count > 0 && ready)
             {
-                DebugMgr.Log($"Addressable Queue Left ::: {queue.Count}");
+                DebugUtil.Log($"Addressable Queue Left ::: {queue.Count}");
 
                 ready = false;
                 queue.Dequeue()?.Invoke();
@@ -45,7 +45,7 @@ public class AddressableMgr : Singleton<AddressableMgr>
 
     public void LoadInit()
     {
-        DebugMgr.Log("Addressable Init");
+        DebugUtil.Log("Addressable Init");
 
         // Use load method under here
 
@@ -102,7 +102,7 @@ public class AddressableMgr : Singleton<AddressableMgr>
             if (Inst.m_totalLoadCount == Inst.m_curLoadedCount)
             {
                 isLoadComplete = true;
-                DebugMgr.Log("Complete ::: Addressable");
+                DebugUtil.Log("Complete ::: Addressable");
             }
         };
     }

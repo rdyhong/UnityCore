@@ -56,21 +56,21 @@ public partial class Photon_Controller : MonoBehaviourPunCallbacks
 
         PhotonNetwork.JoinLobby();
 
-        DebugMgr.Log("Photon ::: OnConnectedToMasterServer");
+        DebugUtil.Log("Photon ::: OnConnectedToMasterServer");
     }
     public override void OnConnected()
     {
         PhotonMgr.OnWorking = false;
-        DebugMgr.Log("Photon ::: OnConnected");
+        DebugUtil.Log("Photon ::: OnConnected");
     }
     public override void OnDisconnected(DisconnectCause cause)
     {
         PhotonMgr.OnWorking = false;
-        DebugMgr.Log($"Photon ::: OnDisconnected by {cause}");
+        DebugUtil.Log($"Photon ::: OnDisconnected by {cause}");
     }
     public override void OnMasterClientSwitched(Player newMasterClient)
     {
-        DebugMgr.Log($"Photon ::: OnMasterClientSwitched -> {newMasterClient}");
+        DebugUtil.Log($"Photon ::: OnMasterClientSwitched -> {newMasterClient}");
     }
 
     // Lobby
@@ -78,49 +78,49 @@ public partial class Photon_Controller : MonoBehaviourPunCallbacks
     public override void OnJoinedLobby()
     {
         PhotonMgr.OnWorking = false;
-        DebugMgr.Log("Photon ::: OnJoinedLobby");
+        DebugUtil.Log("Photon ::: OnJoinedLobby");
     }
     public override void OnLeftLobby()
     {
         PhotonMgr.OnWorking = false;
-        DebugMgr.Log("Photon ::: OnLeftLobby");
+        DebugUtil.Log("Photon ::: OnLeftLobby");
     }
     public override void OnLobbyStatisticsUpdate(List<TypedLobbyInfo> lobbyStatistics)
     {
-        DebugMgr.Log("Photon ::: OnLobbyStatisticsUpdate");
+        DebugUtil.Log("Photon ::: OnLobbyStatisticsUpdate");
     }
     // Room
 
     public override void OnCreatedRoom()
     {
         PhotonMgr.OnWorking = false;
-        DebugMgr.Log("Photon ::: OnCreatedRoom");
+        DebugUtil.Log("Photon ::: OnCreatedRoom");
     }
     public override void OnJoinedRoom()
     {
         PhotonMgr.OnWorking = false;
-        DebugMgr.Log("Photon ::: OnJoinedRoom");
+        DebugUtil.Log("Photon ::: OnJoinedRoom");
     }
     public override void OnLeftRoom()
     {
         PhotonMgr.OnWorking = false;
-        DebugMgr.Log("Photon ::: OnLeftRoom");
+        DebugUtil.Log("Photon ::: OnLeftRoom");
     }
     public override void OnPlayerEnteredRoom(Player newPlayer)
     {
-        DebugMgr.Log("Photon ::: OnPlayerEnteredRoom");
+        DebugUtil.Log("Photon ::: OnPlayerEnteredRoom");
     }
     public override void OnPlayerLeftRoom(Player otherPlayer)
     {
-        DebugMgr.Log("Photon ::: OnPlayerLeftRoom");
+        DebugUtil.Log("Photon ::: OnPlayerLeftRoom");
     }
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
     {
-        DebugMgr.Log("Photon ::: OnRoomListUpdate");
+        DebugUtil.Log("Photon ::: OnRoomListUpdate");
     }
     public override void OnRoomPropertiesUpdate(ExitGames.Client.Photon.Hashtable propertiesThatChanged)
     {
-        DebugMgr.Log("Photon ::: OnRoomPropertiesUpdate");
+        DebugUtil.Log("Photon ::: OnRoomPropertiesUpdate");
     }
 
     // Room Error
@@ -156,23 +156,23 @@ public partial class Photon_Controller : MonoBehaviourPunCallbacks
     // Other
     public override void OnCustomAuthenticationResponse(Dictionary<string, object> data)
     {
-        DebugMgr.Log("Photon ::: OnCustomAuthenticationResponse");
+        DebugUtil.Log("Photon ::: OnCustomAuthenticationResponse");
     }
     public override void OnFriendListUpdate(List<FriendInfo> friendList)
     {
-        DebugMgr.Log("Photon ::: OnFriendListUpdate");
+        DebugUtil.Log("Photon ::: OnFriendListUpdate");
     }
     public override void OnPlayerPropertiesUpdate(Player targetPlayer, ExitGames.Client.Photon.Hashtable changedProps)
     {
-        DebugMgr.Log("Photon ::: OnPlayerPropertiesUpdate");
+        DebugUtil.Log("Photon ::: OnPlayerPropertiesUpdate");
     }
     public override void OnRegionListReceived(RegionHandler regionHandler)
     {
-        DebugMgr.Log("Photon ::: OnRegionListReceived");
+        DebugUtil.Log("Photon ::: OnRegionListReceived");
     }
     public override void OnWebRpcResponse(OperationResponse response)
     {
-        DebugMgr.Log("Photon ::: OnWebRpcResponse");
+        DebugUtil.Log("Photon ::: OnWebRpcResponse");
     }
     #endregion
 }

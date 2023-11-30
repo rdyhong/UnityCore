@@ -4,16 +4,13 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
 using UnityEngine;
-using UnityEditor;
-using Newtonsoft.Json;
-using System.Linq;
 
 public enum TableType
 {
     
 }
 
-public partial class TableMgr : Singleton<TableMgr>
+public partial class CSVReader : Singleton<CSVReader>
 {
     static string SPLIT_RE = @",(?=(?:[^""]*""[^""]*"")*(?![^""]*""))";
     static string LINE_SPLIT_RE = @"\r\n|\n\r|\n|\r";
@@ -93,16 +90,16 @@ public partial class TableMgr : Singleton<TableMgr>
             }
             catch (Exception ex)
             {
-                DebugMgr.LogErr($"{file} Load Error {ex.Message}");
+                DebugUtil.LogErr($"{file} Load Error {ex.Message}");
             }
         }
         try
         {
-            Tables.Add(Util.StringToEnum<TableType>(file), rowEntry);
+            Tables.Add(GameUtil.StringToEnum<TableType>(file), rowEntry);
         }
         catch
         {
-            DebugMgr.LogErr($"Add Table Error\n{file}\n{source}");
+            DebugUtil.LogErr($"Add Table Error\n{file}\n{source}");
         }
     }
 }

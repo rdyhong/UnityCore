@@ -70,7 +70,7 @@ public partial class Photon_Room : MonoBehaviourPunCallbacks
 
         if (!isInRoom)
         {
-            DebugMgr.LogErr("Not In Room");
+            DebugUtil.LogErr("Not In Room");
             PhotonMgr.OnWorking = false;
             return;
         }

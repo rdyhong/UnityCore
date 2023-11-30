@@ -39,7 +39,7 @@ public class PhotonMgr : Singleton<PhotonMgr>
         Inst.blockPanel.SetActive(true);
         OnWorking = true;
 
-        Util.waitUntil(() => !OnWorking, () => {
+        GameUtil.waitUntil(() => !OnWorking, () => {
             OnWorking = false;
             Inst.blockPanel.SetActive(false);
         });

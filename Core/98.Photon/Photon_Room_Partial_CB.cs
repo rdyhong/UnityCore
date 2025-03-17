@@ -18,9 +18,6 @@ public partial class Photon_Room : MonoBehaviourPunCallbacks
     public override void OnJoinedRoom()
     {
         joinRoomCB?.Invoke();
-
-        UI_InRoom.OpenRoomUI();
-
     }
     public override void OnLeftRoom()
     {
@@ -29,11 +26,9 @@ public partial class Photon_Room : MonoBehaviourPunCallbacks
 
     public override void OnPlayerEnteredRoom(Player newPlayer)
     {
-        UI_InRoom.UpdateRoomUI();
     }
     public override void OnPlayerLeftRoom(Player otherPlayer)
     {
-        UI_InRoom.UpdateRoomUI();
     }
 
     public override void OnRoomListUpdate(List<RoomInfo> _roomList)
@@ -43,11 +38,9 @@ public partial class Photon_Room : MonoBehaviourPunCallbacks
     }
     public override void OnRoomPropertiesUpdate(Hashtable propertiesThatChanged)
     {
-        UI_InRoom.UpdateRoomUI();
     }
     public override void OnPlayerPropertiesUpdate(Player targetPlayer, Hashtable changedProps)
     {
-        UI_InRoom.UpdateRoomUI();
     }
 
     public override void OnJoinRandomFailed(short returnCode, string message)

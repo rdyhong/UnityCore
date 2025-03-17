@@ -126,17 +126,17 @@ public partial class Photon_Controller : MonoBehaviourPunCallbacks
     // Room Error
     public override void OnCreateRoomFailed(short returnCode, string message)
     {
-        NoticeMgr.AddNotice($"{message}", "Create Room Failed");
+        DebugUtil.Log($"{message}, Create Room Failed");
         PhotonMgr.OnWorking = false;
     }
     public override void OnJoinRoomFailed(short returnCode, string message)
     {
-        NoticeMgr.AddNotice($"{message}", "Join Room Failed");
+        DebugUtil.Log($"{message}, Join Room Failed");
         PhotonMgr.OnWorking = false;
     }
     public override void OnJoinRandomFailed(short returnCode, string message)
     {
-        NoticeMgr.AddNotice($"{message}", "Join RandomRoom Failed");
+        DebugUtil.Log($"{message}, Join RandomRoom Failed");
         PhotonMgr.OnWorking = false;
     }
 
@@ -144,12 +144,12 @@ public partial class Photon_Controller : MonoBehaviourPunCallbacks
 
     public override void OnErrorInfo(ErrorInfo errorInfo)
     {
-        NoticeMgr.AddNotice($"{errorInfo.Info}", "Error");
+        DebugUtil.Log($"{errorInfo.Info}, Error");
         PhotonMgr.OnWorking = false;
     }
     public override void OnCustomAuthenticationFailed(string debugMessage)
     {
-        NoticeMgr.AddNotice($"{debugMessage}", "Custom Authentication Failed");
+        DebugUtil.Log($"{debugMessage}, Custom Authentication Failed");
         PhotonMgr.OnWorking = false;
     }
 

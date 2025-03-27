@@ -210,13 +210,13 @@ public static class GameUtil
 
     public static void WaitForSeconds(float time, Action endAction)
     {
-        GameMgr.Inst.StartCoroutine(waitForSecondsUpdate(time, endAction));
+        GameMgr.Inst.StartCoroutine(WaitForSecondsCo(time, endAction));
     }
     public static Coroutine WaitForSeconds_cor(float time, Action endAction)
     {
-        return GameMgr.Inst.StartCoroutine(waitForSecondsUpdate(time, endAction));
+        return GameMgr.Inst.StartCoroutine(WaitForSecondsCo(time, endAction));
     }
-    private static IEnumerator waitForSecondsUpdate(float time, Action endAction)
+    private static IEnumerator WaitForSecondsCo(float time, Action endAction)
     {
         float timer = 0;
         while (timer < time)
@@ -230,7 +230,7 @@ public static class GameUtil
             endAction();
     }
 
-    public static void waitUntil(Func<bool> isUntil, Action endAction)
+    public static void WaitUntil(Func<bool> isUntil, Action endAction)
     {
         GameMgr.Inst.StartCoroutine(waitUntilUpdate(isUntil, endAction));
     }

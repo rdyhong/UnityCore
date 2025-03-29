@@ -21,6 +21,25 @@ public class TimeMgr
         }
     }
 
+    public static float ObjFixedTimeScale = 1;
+    public static float ObjFixedDeltaTime
+    {
+        get
+        {
+            return Time.fixedDeltaTime * ObjFixedTimeScale;
+        }
+        set
+        {
+            if (value <= 0)
+            {
+                ObjFixedTimeScale = 0f;
+                DebugUtil.Log("Can't set time to lower than 0");
+            }
+            ObjFixedTimeScale = value;
+            DebugUtil.Log($"Obj DeltaTime Set ::: {ObjFixedTimeScale}");
+        }
+    }
+
     private static float s_uiTimeScale = 1;
     public static float UIDeltaTime
     {

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace BaligamesExtention
+namespace RR95
 {
     public static class Vector3Ex
     {

@@ -28,7 +28,7 @@ public partial class Photon_Controller : MonoBehaviourPunCallbacks
 
     public void LoadScene(EScene _scene)
     {
-        photonView.RPC("RPC_LoadScene", RpcTarget.All);
+        photonView.RPC(nameof(RPC_LoadScene), RpcTarget.All);
         
     }
     [PunRPC]

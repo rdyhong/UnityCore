@@ -26,7 +26,7 @@ public partial class Photon_Controller : MonoBehaviourPunCallbacks
         PhotonNetwork.ConnectUsingSettings();
     }
 
-    public void LoadScene(SceneKind _scene)
+    public void LoadScene(EScene _scene)
     {
         photonView.RPC("RPC_LoadScene", RpcTarget.All);
         
@@ -36,7 +36,7 @@ public partial class Photon_Controller : MonoBehaviourPunCallbacks
     {
         PhotonMgr.OnWorkingBlock();
 
-        SceneMgr.Inst.LoadScene(SceneKind.InGame);
+        SceneMgr.Inst.LoadScene(EScene.InGame);
     }
 
     public static int GetPing()

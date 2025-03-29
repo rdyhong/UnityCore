@@ -11,12 +11,12 @@ public delegate void LoadCallback();
 /// </summary>
 public class SceneMgr : Singleton<SceneMgr>
 {
-    private SceneKind loadSceneKind = SceneKind.None;
-    private Dictionary<SceneKind, GameScene> gameScenes = new Dictionary<SceneKind, GameScene>();
+    private EScene loadSceneKind = EScene.None;
+    private Dictionary<EScene, GameScene> gameScenes = new Dictionary<EScene, GameScene>();
     private LoadCallback loadCallback;
     
     public GameScene curScene;
-    public static SceneKind curSceneKind;
+    public static EScene curSceneKind;
 
     protected override void Awake()
     {
@@ -28,12 +28,12 @@ public class SceneMgr : Singleton<SceneMgr>
         //gameScenes.Add(SceneKind.InGame, new InGame());
     }
 
-    public void LoadScene(SceneKind sceneKind, LoadCallback callback = null)
+    public void LoadScene(EScene sceneKind, LoadCallback callback = null)
     {
         loadSceneKind = sceneKind;
         loadCallback = callback;
         curScene = gameScenes[sceneKind];
-        if (sceneKind == SceneKind.None)
+        if (sceneKind == EScene.None)
             return;
 
         StartCoroutine(LoadAsyncScene());

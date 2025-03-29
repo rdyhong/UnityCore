@@ -2,22 +2,22 @@ using UnityEngine;
 
 public class TimeMgr
 {
-    private static float s_objTimeScale = 1;
+    public static float ObjTimeScale = 1;
     public static float ObjDeltaTime
     {
         get
         {
-            return Time.deltaTime * s_objTimeScale;
+            return Time.deltaTime * ObjTimeScale;
         }
         set
         {
             if (value <= 0)
             {
-                s_objTimeScale = 0f;
+                ObjTimeScale = 0f;
                 DebugUtil.Log("Can't set time to lower than 0");
             }
-            s_objTimeScale = value;
-            DebugUtil.Log($"UIDeltaTime Set ::: {s_objTimeScale}");
+            ObjTimeScale = value;
+            DebugUtil.Log($"Obj DeltaTime Set ::: {ObjTimeScale}");
         }
     }
 

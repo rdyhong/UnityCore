@@ -1,6 +1,6 @@
 ﻿using System;
 
-public enum SceneKind
+public enum EScene
 {
     None = -1,
     Splash = 0,

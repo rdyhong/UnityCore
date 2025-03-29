@@ -26,7 +26,7 @@ public class PhotonMgr : Singleton<PhotonMgr>
         if(Input.GetKeyDown(KeyCode.Escape))
         {
             //Photon_Controller.LoadScene(SceneKind.Lobby);
-            SceneMgr.Inst.LoadScene(SceneKind.Lobby);
+            SceneMgr.Inst.LoadScene(EScene.Lobby);
         }
         if (Input.GetKeyDown(KeyCode.P))
         {

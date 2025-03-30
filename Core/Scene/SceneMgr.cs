@@ -12,10 +12,10 @@ public delegate void LoadCallback();
 public class SceneMgr : Singleton<SceneMgr>
 {
     private EScene loadSceneKind = EScene.None;
-    private Dictionary<EScene, GameScene> gameScenes = new Dictionary<EScene, GameScene>();
+    //private Dictionary<EScene, GameScene> gameScenes = new Dictionary<EScene, GameScene>();
     private LoadCallback loadCallback;
     
-    public GameScene curScene;
+    //public GameScene curScene;
     public static EScene curSceneKind;
 
     protected override void Awake()
@@ -32,7 +32,7 @@ public class SceneMgr : Singleton<SceneMgr>
     {
         loadSceneKind = sceneKind;
         loadCallback = callback;
-        curScene = gameScenes[sceneKind];
+        //curScene = gameScenes[sceneKind];
         if (sceneKind == EScene.None)
             return;
 
@@ -47,17 +47,15 @@ public class SceneMgr : Singleton<SceneMgr>
         {
             yield return null;
         }
-        curScene.DataInitialize(() =>
-        {
-            GC.Collect();
-        });
-
-        curScene.Init();
+        //curScene.DataInitialize(() =>
+        //{
+        //    GC.Collect();
+        //});
+        GC.Collect();
+        //curScene.Init();
 
         loadCallback?.Invoke();
 
         curSceneKind = loadSceneKind;
-
-        PhotonMgr.OnWorking = false;
     }
 }

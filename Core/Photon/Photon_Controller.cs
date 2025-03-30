@@ -12,18 +12,11 @@ public partial class Photon_Controller : MonoBehaviourPunCallbacks
 
     Action masterConnectCB;
     
-    
-    private void Awake()
+    public void Initialize()
     {
-        pv = GetComponent<PhotonView>();
-        PhotonMgr.controller = this;
-    }
-    public void Init(Action _callback = null)
-    {
-        masterConnectCB = _callback;
+        //masterConnectCB = _callback;
 
-        PhotonMgr.OnWorkingBlock();
-        PhotonNetwork.ConnectUsingSettings();
+        //PhotonNetwork.ConnectUsingSettings();
     }
 
     public void LoadScene(EScene _scene)
@@ -39,12 +32,6 @@ public partial class Photon_Controller : MonoBehaviourPunCallbacks
         SceneMgr.Inst.LoadScene(EScene.InGame);
     }
 
-    public static int GetPing()
-    {
-        return PhotonNetwork.GetPing();
-    }
-    
-
     #region CallBacks
 
     public override void OnConnectedToMaster()
@@ -54,9 +41,9 @@ public partial class Photon_Controller : MonoBehaviourPunCallbacks
 
         PhotonMgr.OnWorking = false;
 
-        PhotonNetwork.JoinLobby();
+        //PhotonNetwork.JoinLobby();
 
-        DebugUtil.Log("Photon ::: OnConnectedToMasterServer");
+        Debug.Log("Photon ::: OnConnectedToMasterServer");
     }
     public override void OnConnected()
     {

@@ -14,12 +14,33 @@ public class PhotonMgr : Singleton<PhotonMgr>
     public static Photon_Controller controller;
     public static Photon_Room room;
 
-    
-
-    public static void Init(Action _callback)
+    public void Initialize()
     {
-        controller.Init(_callback);
+        //controller = new GameObject(nameof(Photon_Controller)).AddComponent<Photon_Controller>();
+        //controller.Initialize();
+
+        //PhotonNetwork.ConnectUsingSettings();
     }
+
+    public IEnumerator InitializeCo()
+    {
+        controller = new GameObject(nameof(Photon_Controller)).AddComponent<Photon_Controller>();
+        controller.transform.SetParent(transform);
+        controller.Initialize();
+
+        PhotonNetwork.ConnectUsingSettings();
+
+        // 클라이언트 세팅 완료
+        yield return PhotonNetwork.IsConnectedAndReady;
+        Debug.Log("ConnectedAndReady");
+
+        // 마스터 서버 접속 대기
+        yield return new WaitUntil(() => PhotonNetwork.NetworkClientState == ClientState.ConnectedToMasterServer);
+        Debug.Log("ConnectedToMasterServer");
+
+
+    }
+
 
     private void Update()
     {
@@ -32,6 +53,11 @@ public class PhotonMgr : Singleton<PhotonMgr>
         {
             Photon_Room.LeaveRoom();
         }
+    }
+
+    public static int GetPing()
+    {
+        return PhotonNetwork.GetPing();
     }
 
     public static void OnWorkingBlock()

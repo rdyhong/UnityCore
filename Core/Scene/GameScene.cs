@@ -3,10 +3,10 @@
 public enum EScene
 {
     None = -1,
-    Splash = 0,
+    AppStartScene = 0,
     Title,
-    Lobby,
-    InGame
+    LobbyScene,
+    InGameScene
 }
 
 public abstract class GameScene

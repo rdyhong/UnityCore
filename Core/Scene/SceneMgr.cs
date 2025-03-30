@@ -30,11 +30,12 @@ public class SceneMgr : Singleton<SceneMgr>
 
     public void LoadScene(EScene sceneKind, LoadCallback callback = null)
     {
+        if (sceneKind == EScene.None)
+            return;
+
         loadSceneKind = sceneKind;
         loadCallback = callback;
         //curScene = gameScenes[sceneKind];
-        if (sceneKind == EScene.None)
-            return;
 
         StartCoroutine(LoadAsyncScene());
     }

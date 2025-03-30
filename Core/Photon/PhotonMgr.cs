@@ -31,13 +31,15 @@ public class PhotonMgr : Singleton<PhotonMgr>
         PhotonNetwork.ConnectUsingSettings();
 
         // 클라이언트 세팅 완료
+        Debug.Log("ConnectUsingSettings");
         yield return PhotonNetwork.IsConnectedAndReady;
-        Debug.Log("ConnectedAndReady");
 
         // 마스터 서버 접속 대기
+        Debug.Log("Try Connect To Master Server...");
         yield return new WaitUntil(() => PhotonNetwork.NetworkClientState == ClientState.ConnectedToMasterServer);
         Debug.Log("ConnectedToMasterServer");
 
+        // 마스터 서버 접속 완료
 
     }
 
@@ -47,7 +49,7 @@ public class PhotonMgr : Singleton<PhotonMgr>
         if(Input.GetKeyDown(KeyCode.Escape))
         {
             //Photon_Controller.LoadScene(SceneKind.Lobby);
-            SceneMgr.Inst.LoadScene(EScene.Lobby);
+            SceneMgr.Inst.LoadScene(EScene.LobbyScene);
         }
         if (Input.GetKeyDown(KeyCode.P))
         {

@@ -21,7 +21,7 @@ public partial class Photon_Controller : MonoBehaviourPunCallbacks
     {
         PhotonMgr.OnWorkingBlock();
 
-        SceneMgr.Inst.LoadScene(EScene.InGame);
+        SceneMgr.Inst.LoadScene(EScene.InGameScene);
     }
 
     #region CallBacks

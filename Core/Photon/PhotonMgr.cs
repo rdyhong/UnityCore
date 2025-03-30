@@ -26,7 +26,7 @@ public class PhotonMgr : Singleton<PhotonMgr>
     {
         controller = new GameObject(nameof(Photon_Controller)).AddComponent<Photon_Controller>();
         controller.transform.SetParent(transform);
-        controller.Initialize();
+       // controller.Initialize();
 
         PhotonNetwork.ConnectUsingSettings();
 

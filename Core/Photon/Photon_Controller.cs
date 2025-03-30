@@ -10,20 +10,12 @@ public partial class Photon_Controller : MonoBehaviourPunCallbacks
 {
     PhotonView pv;
 
-    Action masterConnectCB;
-    
-    public void Initialize()
-    {
-        //masterConnectCB = _callback;
-
-        //PhotonNetwork.ConnectUsingSettings();
-    }
-
     public void LoadScene(EScene _scene)
     {
         photonView.RPC(nameof(RPC_LoadScene), RpcTarget.All);
         
     }
+
     [PunRPC]
     void RPC_LoadScene()
     {
@@ -36,9 +28,6 @@ public partial class Photon_Controller : MonoBehaviourPunCallbacks
 
     public override void OnConnectedToMaster()
     {
-        masterConnectCB?.Invoke();
-        masterConnectCB = null;
-
         PhotonMgr.OnWorking = false;
 
         //PhotonNetwork.JoinLobby();

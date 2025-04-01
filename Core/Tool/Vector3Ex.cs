@@ -27,19 +27,22 @@ namespace RR95
         /// 길이를 1로 정규화 합니다.
         /// </summary>
         /// <param name="v"></param>
-        public static void Normalized(this ref Vector3 v)
+        public static Vector3 Normalized(this Vector3 v)
         {
             v = v.normalized;
+            return v;
         }
-        public static void NormalizedIgnoreY(this ref Vector3 v)
+        public static Vector3 NormalizedIgnoreY(this Vector3 v)
         {
             v.y = 0;
             v = v.normalized;
+            return v;
         }
-        public static void NormalizedIgnoreZ(this ref Vector3 v)
+        public static Vector3 NormalizedIgnoreZ(this Vector3 v)
         {
             v.z = 0;
             v = v.normalized;
+            return v;
         }
 
         /// <summary>

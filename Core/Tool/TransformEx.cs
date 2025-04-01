@@ -30,6 +30,8 @@ namespace RR95
         public static void SetLocalPositionZ(this Transform tf, float v)
             => tf.localPosition = new Vector3(tf.localPosition.x, tf.localPosition.y, v);
 
+        public static void SetRotation(this Transform tf, Vector3 v)
+            => tf.rotation = Quaternion.Euler(v.x, v.y, v.z);
         /// <summary>
         /// 특정 축의 회전 값을 설정합니다.
         /// </summary>
@@ -120,16 +122,12 @@ namespace RR95
         public static Vector3 GetDirectionToIgnoreY(this Transform from, Transform to)
         {
             Vector3 dir = to.position - from.position;
-            dir.FlattenY();
-            dir.Normalized();
-            return dir;
+            return dir.NormalizedIgnoreY();
         }
         public static Vector3 GetDirectionToIgnoreZ(this Transform from, Transform to)
         {
-            Vector3 dir = to.position - from.position;
-            dir.FlattenZ();
-            dir.Normalized();
-            return dir;
+            Vector3 dir = to.position - from.position;            
+            return dir.NormalizedIgnoreZ();
         }
 
         /// <summary>

@@ -14,14 +14,6 @@ public class PhotonMgr : Singleton<PhotonMgr>
     public static Photon_Controller controller;
     public static Photon_Room room;
 
-    public void Initialize()
-    {
-        //controller = new GameObject(nameof(Photon_Controller)).AddComponent<Photon_Controller>();
-        //controller.Initialize();
-
-        //PhotonNetwork.ConnectUsingSettings();
-    }
-
     public IEnumerator InitializeCo()
     {
         controller = new GameObject(nameof(Photon_Controller)).AddComponent<Photon_Controller>();
@@ -72,11 +64,5 @@ public class PhotonMgr : Singleton<PhotonMgr>
             OnWorking = false;
             Inst.blockPanel.SetActive(false);
         });
-    }
-
-    public void SpawnCharacter()
-    {
-        Character c = PhotonNetwork.Instantiate("UseOnPhoton/Character", Vector3.zero, Quaternion.identity).GetComponent<Character>();
-        c.Initialize();
     }
 }

@@ -19,8 +19,6 @@ public partial class Photon_Controller : MonoBehaviourPunCallbacks
     [PunRPC]
     void RPC_LoadScene()
     {
-        PhotonMgr.OnWorkingBlock();
-
         SceneMgr.Inst.LoadScene(EScene.InGameScene);
     }
 

@@ -54,15 +54,34 @@ public class PhotonMgr : Singleton<PhotonMgr>
     {
         return PhotonNetwork.GetPing();
     }
-
-    public static void OnWorkingBlock()
+    public static Player[] GetAllPlayer()
     {
-        Inst.blockPanel.SetActive(true);
-        OnWorking = true;
+        return PhotonNetwork.PlayerList;
+    }
+    public IEnumerator JoinRandomRoomCo()
+    {
+        if (!PhotonNetwork.IsConnectedAndReady ||
+            PhotonNetwork.NetworkClientState == ClientState.Joining ||
+            PhotonNetwork.NetworkClientState == ClientState.Joined)
+        {
+            Debug.LogWarning("다른 작업 중입니다.");
+            yield break;
+        }
 
-        GameUtil.WaitUntil(() => !OnWorking, () => {
-            OnWorking = false;
-            Inst.blockPanel.SetActive(false);
-        });
+        PhotonNetwork.JoinRandomRoom();
+    }
+
+    public void CreatedRoom(string _roomName = null, RoomOptions _option = null)
+    {
+        // 포톤이 연결되어 있는지 & 상태가 방 생성을 할 수 있는지 체크
+        if (!PhotonNetwork.IsConnectedAndReady ||
+            PhotonNetwork.NetworkClientState == ClientState.Joining ||
+            PhotonNetwork.NetworkClientState == ClientState.Joined)
+        {
+            Debug.LogWarning("다른 작업 중입니다.");
+            return;
+        }
+
+        PhotonNetwork.CreateRoom(_roomName, _option, null);
     }
 }

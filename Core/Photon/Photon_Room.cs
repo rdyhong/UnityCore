@@ -20,16 +20,12 @@ public partial class Photon_Room : MonoBehaviourPunCallbacks
 
     public static void CreatedRoom(string _roomName = null, RoomOptions _option = null, Action _callback = null)
     {
-        PhotonMgr.OnWorkingBlock();
-
         createRoomCB = _callback;
         PhotonNetwork.CreateRoom(_roomName, _option, null);
     }
 
     public static void JoinRoom(string _roomName = null)
     {
-        PhotonMgr.OnWorkingBlock();
-
         foreach(RoomInfo _info in GetAllRoomInfo())
         {
             if(_info.Name == _roomName)
@@ -43,8 +39,6 @@ public partial class Photon_Room : MonoBehaviourPunCallbacks
     }
     public static void JoinRandomRoom(Action _joinRandomRoomCB = null)
     {
-        PhotonMgr.OnWorkingBlock();
-
         if (isInRoom)
         {
             DebugUtil.Log("Already In Room, Fail");
@@ -66,8 +60,6 @@ public partial class Photon_Room : MonoBehaviourPunCallbacks
 
     public static void LeaveRoom()
     {
-        PhotonMgr.OnWorkingBlock();
-
         if (!isInRoom)
         {
             DebugUtil.LogErr("Not In Room");

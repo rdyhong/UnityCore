@@ -37,10 +37,11 @@ public class PhotonMgr : Singleton<PhotonMgr>
         // 마스터 서버 접속 대기
         Debug.Log("Try Connect To Master Server...");
         yield return new WaitUntil(() => PhotonNetwork.NetworkClientState == ClientState.ConnectedToMasterServer);
-        Debug.Log("ConnectedToMasterServer");
-
-        // 마스터 서버 접속 완료
-
+        
+        // 로비 접속 대기
+        PhotonNetwork.JoinLobby();
+        yield return new WaitUntil(() => PhotonNetwork.NetworkClientState == ClientState.JoinedLobby);
+        Debug.Log("JoinedLobby");
     }
 
 
@@ -49,7 +50,7 @@ public class PhotonMgr : Singleton<PhotonMgr>
         if(Input.GetKeyDown(KeyCode.Escape))
         {
             //Photon_Controller.LoadScene(SceneKind.Lobby);
-            SceneMgr.Inst.LoadScene(EScene.LobbyScene);
+            //SceneMgr.Inst.LoadScene(EScene.LobbyScene);
         }
         if (Input.GetKeyDown(KeyCode.P))
         {
@@ -71,5 +72,11 @@ public class PhotonMgr : Singleton<PhotonMgr>
             OnWorking = false;
             Inst.blockPanel.SetActive(false);
         });
+    }
+
+    public void SpawnCharacter()
+    {
+        Character c = PhotonNetwork.Instantiate("UseOnPhoton/Character", Vector3.zero, Quaternion.identity).GetComponent<Character>();
+        c.Initialize();
     }
 }

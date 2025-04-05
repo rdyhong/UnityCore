@@ -24,7 +24,7 @@ public class PhotonPlayerMgr : SingletonPun<PhotonPlayerMgr>
             { EPlayerCustomPropertyKey.NickName.ToString(), $"Player_{Random.Range(0, 10000)}" },
             { EPlayerCustomPropertyKey.CharacterSkin.ToString(), 0 },
             { EPlayerCustomPropertyKey.Team.ToString(), 0 },
-            { EPlayerCustomPropertyKey.CurrentScene.ToString(), EScene.LobbyScene }
+            { EPlayerCustomPropertyKey.CurrentScene.ToString(), EScene.LobbyScene.ToString() }
         };
 
         // 내 플레이어에 프로퍼티 설정

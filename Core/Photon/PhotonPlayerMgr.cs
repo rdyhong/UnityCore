@@ -11,7 +11,7 @@ public enum EPlayerCustomPropertyKey
     NickName,
     CharacterSkin,
     Team,
-    LoadingScene,
+    CurrentScene,
 }
 
 public class PhotonPlayerMgr : SingletonPun<PhotonPlayerMgr>
@@ -24,7 +24,7 @@ public class PhotonPlayerMgr : SingletonPun<PhotonPlayerMgr>
             { EPlayerCustomPropertyKey.NickName.ToString(), $"Player_{Random.Range(0, 10000)}" },
             { EPlayerCustomPropertyKey.CharacterSkin.ToString(), 0 },
             { EPlayerCustomPropertyKey.Team.ToString(), 0 },
-            { EPlayerCustomPropertyKey.LoadingScene.ToString(), false }
+            { EPlayerCustomPropertyKey.CurrentScene.ToString(), EScene.LobbyScene }
         };
 
         // 내 플레이어에 프로퍼티 설정
@@ -36,7 +36,7 @@ public class PhotonPlayerMgr : SingletonPun<PhotonPlayerMgr>
         return (T)player.CustomProperties[key.ToString()];
     }
 
-    public void SetCurtomProperty<T>(EPlayerCustomPropertyKey key, object value)
+    public void SetCurtomProperty<T>(EPlayerCustomPropertyKey key, T value)
     {
         PhotonHashTable customProperties = new PhotonHashTable
         {
@@ -46,13 +46,13 @@ public class PhotonPlayerMgr : SingletonPun<PhotonPlayerMgr>
         PhotonNetwork.LocalPlayer.SetCustomProperties(customProperties);
     }
 
-    public bool IsAllPlayerLoadScene()
+    public bool IsAllPlayerInTargetScene(EScene scene)
     {
         List<Player> playerList = PhotonNetwork.CurrentRoom.Players.Values.ToList();
 
         for (int i = 0; i < playerList.Count; i++)
         {
-            if (!GetCurtomProperty<bool>(playerList[i], EPlayerCustomPropertyKey.LoadingScene))
+            if (scene.ToString() != GetCurtomProperty<string>(playerList[i], EPlayerCustomPropertyKey.CurrentScene))
             {
                 return false;
             }

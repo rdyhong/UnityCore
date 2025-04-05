@@ -31,7 +31,7 @@ public class PhotonPlayerMgr : SingletonPun<PhotonPlayerMgr>
         PhotonNetwork.LocalPlayer.SetCustomProperties(customProperties);
     }
 
-    public T GetCurtomProperty<T>(Player player, EPlayerCustomPropertyKey key)
+    public T GetCustomProperty<T>(Player player, EPlayerCustomPropertyKey key)
     {
         return (T)player.CustomProperties[key.ToString()];
     }
@@ -52,7 +52,7 @@ public class PhotonPlayerMgr : SingletonPun<PhotonPlayerMgr>
 
         for (int i = 0; i < playerList.Count; i++)
         {
-            if (scene.ToString() != GetCurtomProperty<string>(playerList[i], EPlayerCustomPropertyKey.CurrentScene))
+            if (scene.ToString() != GetCustomProperty<string>(playerList[i], EPlayerCustomPropertyKey.CurrentScene))
             {
                 return false;
             }

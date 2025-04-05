@@ -5,20 +5,25 @@ using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
 using Photon.Realtime;
+using Unity.VisualScripting;
 
 public class PhotonMgr : Singleton<PhotonMgr>
 {
+    private PhotonView _pv;
+
     [SerializeField] GameObject blockPanel;
     public static bool OnWorking = false;
 
-    public static Photon_Controller controller;
-    public static Photon_Room room;
+    //public static Photon_Controller controller;
+    //public static Photon_Room room;
 
     public IEnumerator InitializeCo()
     {
-        controller = new GameObject(nameof(Photon_Controller)).AddComponent<Photon_Controller>();
-        controller.transform.SetParent(transform);
-       // controller.Initialize();
+        //controller = new GameObject(nameof(Photon_Controller)).AddComponent<Photon_Controller>();
+        //controller.transform.SetParent(transform);
+        // controller.Initialize();
+
+        _pv = transform.AddComponent<PhotonView>();
 
         PhotonNetwork.ConnectUsingSettings();
 
@@ -49,39 +54,23 @@ public class PhotonMgr : Singleton<PhotonMgr>
             Photon_Room.LeaveRoom();
         }
     }
-
+    
     public static int GetPing()
     {
         return PhotonNetwork.GetPing();
     }
+    public void LoadScene(EScene scene)
+    {
+        _pv.RPC(nameof(RPC_LoadScene), RpcTarget.All, scene);
+
+    }
+    [PunRPC]
+    private void RPC_LoadScene(EScene scene)
+    {
+        SceneMgr.Inst.LoadScene(scene);
+    }
     public static Player[] GetAllPlayer()
     {
         return PhotonNetwork.PlayerList;
-    }
-    public IEnumerator JoinRandomRoomCo()
-    {
-        if (!PhotonNetwork.IsConnectedAndReady ||
-            PhotonNetwork.NetworkClientState == ClientState.Joining ||
-            PhotonNetwork.NetworkClientState == ClientState.Joined)
-        {
-            Debug.LogWarning("다른 작업 중입니다.");
-            yield break;
-        }
-
-        PhotonNetwork.JoinRandomRoom();
-    }
-
-    public void CreatedRoom(string _roomName = null, RoomOptions _option = null)
-    {
-        // 포톤이 연결되어 있는지 & 상태가 방 생성을 할 수 있는지 체크
-        if (!PhotonNetwork.IsConnectedAndReady ||
-            PhotonNetwork.NetworkClientState == ClientState.Joining ||
-            PhotonNetwork.NetworkClientState == ClientState.Joined)
-        {
-            Debug.LogWarning("다른 작업 중입니다.");
-            return;
-        }
-
-        PhotonNetwork.CreateRoom(_roomName, _option, null);
     }
 }

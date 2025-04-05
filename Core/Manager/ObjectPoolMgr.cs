@@ -8,7 +8,7 @@ public interface IPoolingObject
     public abstract void OnRecycle();
 }
 
-public class ObjectPool : Singleton<ObjectPool>
+public class ObjectPoolMgr : Singleton<ObjectPoolMgr>
 {
     private Transform _parent = null;
     public Dictionary<string, List<GameObject>> _objPool = new Dictionary<string, List<GameObject>>();

@@ -8,13 +8,6 @@ using Hashtable = ExitGames.Client.Photon.Hashtable;
 
 public partial class Photon_Room : MonoBehaviourPunCallbacks
 {
-    
-
-    private void Awake()
-    {
-        PhotonMgr.room = this;
-    }
-
     public static bool isInRoom { get { return PhotonNetwork.InRoom; } }
     public static bool isMasterClient { get { return PhotonNetwork.IsMasterClient; } }
 

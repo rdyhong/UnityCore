@@ -9,15 +9,8 @@ using Unity.VisualScripting;
 
 public class PhotonMgr : Singleton<PhotonMgr>
 {
-    //public static Photon_Controller controller;
-    //public static Photon_Room room;
-
     public IEnumerator InitializeCo()
     {
-        //controller = new GameObject(nameof(Photon_Controller)).AddComponent<Photon_Controller>();
-        //controller.transform.SetParent(transform);
-        // controller.Initialize();
-
         PhotonNetwork.ConnectUsingSettings();
 
         // 클라이언트 세팅 완료

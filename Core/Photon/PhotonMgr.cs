@@ -9,11 +9,6 @@ using Unity.VisualScripting;
 
 public class PhotonMgr : Singleton<PhotonMgr>
 {
-    private PhotonView _pv;
-
-    [SerializeField] GameObject blockPanel;
-    public static bool OnWorking = false;
-
     //public static Photon_Controller controller;
     //public static Photon_Room room;
 
@@ -22,8 +17,6 @@ public class PhotonMgr : Singleton<PhotonMgr>
         //controller = new GameObject(nameof(Photon_Controller)).AddComponent<Photon_Controller>();
         //controller.transform.SetParent(transform);
         // controller.Initialize();
-
-        _pv = transform.AddComponent<PhotonView>();
 
         PhotonNetwork.ConnectUsingSettings();
 
@@ -59,16 +52,7 @@ public class PhotonMgr : Singleton<PhotonMgr>
     {
         return PhotonNetwork.GetPing();
     }
-    public void LoadScene(EScene scene)
-    {
-        _pv.RPC(nameof(RPC_LoadScene), RpcTarget.All, scene);
-
-    }
-    [PunRPC]
-    private void RPC_LoadScene(EScene scene)
-    {
-        SceneMgr.Inst.LoadScene(scene);
-    }
+    
     public static Player[] GetAllPlayer()
     {
         return PhotonNetwork.PlayerList;

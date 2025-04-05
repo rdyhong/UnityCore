@@ -27,7 +27,6 @@ public partial class Photon_Room : MonoBehaviourPunCallbacks
                 break;
             }
         }
-        PhotonMgr.OnWorking = false;
         DebugUtil.Log($"Room is not found\n'{_roomName}', Room not found");
     }
     public static void JoinRandomRoom(Action _joinRandomRoomCB = null)
@@ -56,7 +55,6 @@ public partial class Photon_Room : MonoBehaviourPunCallbacks
         if (!isInRoom)
         {
             DebugUtil.LogErr("Not In Room");
-            PhotonMgr.OnWorking = false;
             return;
         }
 

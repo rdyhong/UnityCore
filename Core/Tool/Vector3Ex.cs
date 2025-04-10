@@ -93,5 +93,20 @@ namespace RR95
             v.z += z;
             return v;
         }
+
+        /// <summary>
+        /// 현재 방향 기준으로 랜덤 방향 반환
+        /// </summary>
+        /// <param name="curDir">현재 각도</param>
+        /// <param name="angle">랜덤 최대 각도</param>
+        /// <returns></returns>
+        public static Vector3 GetRandomizedDirection(this Vector3 curDir, float angle)
+        {
+            Vector3 randomAxis = Random.onUnitSphere;
+            float randomAngle = Random.Range(-angle, angle);
+            Quaternion randomRotation = Quaternion.AngleAxis(randomAngle, randomAxis);
+            Vector3 randomizedDirection = randomRotation * curDir;
+            return randomizedDirection;
+        }
     }
 }

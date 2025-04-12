@@ -95,7 +95,7 @@ namespace RR95
         }
 
         /// <summary>
-        /// 현재 방향 기준으로 랜덤 방향 반환
+        /// 현재 방향 기준으로 각도 내 랜덤 방향 반환
         /// </summary>
         /// <param name="curDir">현재 각도</param>
         /// <param name="angle">랜덤 최대 각도</param>

@@ -4,6 +4,12 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using PhotonHashTable = ExitGames.Client.Photon.Hashtable;
+
+public enum ERoomCustomPropertyKey
+{
+    PassWord,
+}
 
 public class PhotonRoomMgr : SingletonPun<PhotonRoomMgr>
 {
@@ -30,6 +36,44 @@ public class PhotonRoomMgr : SingletonPun<PhotonRoomMgr>
         options.IsOpen = _isOpen;
         options.IsVisible = _isVisible;
         return options;
+    }
+
+    public void ResetCustomProperty()
+    {
+        PhotonHashTable customProperties = new PhotonHashTable
+        {
+            { ERoomCustomPropertyKey.PassWord.ToString(), string.Empty },
+        };
+
+        // 내 플레이어에 프로퍼티 설정
+        PhotonNetwork.CurrentRoom.SetCustomProperties(customProperties);
+    }
+
+    public T GetCustomProperty<T>(ERoomCustomPropertyKey key)
+    {
+        if (!PhotonNetwork.InRoom)
+        {
+            Debug.LogWarning("Not in Room");
+            return default(T);
+        }
+
+        return (T)PhotonNetwork.CurrentRoom.CustomProperties[key.ToString()];
+    }
+
+    public void SetCurtomProperty<T>(ERoomCustomPropertyKey key, T value)
+    {
+        if (!PhotonNetwork.InRoom)
+        {
+            Debug.LogWarning("Not in Room");
+            return;
+        }
+
+        PhotonHashTable customProperties = new PhotonHashTable
+        {
+            { $"{key.ToString()}", (T)value }
+        };
+
+        PhotonNetwork.CurrentRoom.SetCustomProperties(customProperties);
     }
 
     public override void OnCreatedRoom()

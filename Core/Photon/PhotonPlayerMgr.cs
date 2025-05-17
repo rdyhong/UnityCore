@@ -8,22 +8,19 @@ using System.Linq;
 
 public enum EPlayerCustomPropertyKey
 {
-    NickName,
-    CharacterSkin,
-    Team,
-    CurrentScene,
+    CharacterSkin,  // int
+    Team,           // int (0, 1)
+    CurrentScene,   // string
 }
 
 public class PhotonPlayerMgr : SingletonPun<PhotonPlayerMgr>
 {
-
     public void ResetCustomProperty()
     {
         PhotonHashTable customProperties = new PhotonHashTable
         {
-            { EPlayerCustomPropertyKey.NickName.ToString(), $"Player_{Random.Range(0, 10000)}" },
             { EPlayerCustomPropertyKey.CharacterSkin.ToString(), 0 },
-            { EPlayerCustomPropertyKey.Team.ToString(), 0 },
+            { EPlayerCustomPropertyKey.Team.ToString(), -1 },
             { EPlayerCustomPropertyKey.CurrentScene.ToString(), EScene.LobbyScene.ToString() }
         };
 
@@ -36,7 +33,7 @@ public class PhotonPlayerMgr : SingletonPun<PhotonPlayerMgr>
         return (T)player.CustomProperties[key.ToString()];
     }
 
-    public void SetCurtomProperty<T>(EPlayerCustomPropertyKey key, T value)
+    public void SetCustomProperty<T>(EPlayerCustomPropertyKey key, T value)
     {
         PhotonHashTable customProperties = new PhotonHashTable
         {
@@ -59,5 +56,61 @@ public class PhotonPlayerMgr : SingletonPun<PhotonPlayerMgr>
         }
 
         return true;
+    }
+
+    public void SetNickName(string n)
+    {
+        PhotonNetwork.LocalPlayer.NickName = n;
+    }
+
+    /// <summary>
+    /// 룸 입장시점 내 팀 자동 세팅
+    /// </summary>
+    private void SetMyTeamOnJoinRoom()
+    {
+        // Team
+        int team0Count = 0;
+        int team1Count = 0;
+
+        foreach(Player player in PhotonNetwork.CurrentRoom.Players.Values)
+        {
+            // 자신 제외
+            if (player == PhotonNetwork.LocalPlayer) continue;
+
+            if (GetCustomProperty<int>(player, EPlayerCustomPropertyKey.Team) == 0)
+            {
+                team0Count++;
+            }
+            else if (GetCustomProperty<int>(player, EPlayerCustomPropertyKey.Team) == 1)
+            {
+                team1Count++;
+            }
+        }
+
+        int selectedTeam = 0;
+
+        if(team0Count <= team1Count)
+        {
+            selectedTeam = 0;
+        }
+        else
+        {
+            selectedTeam = 1;
+        }
+
+        SetCustomProperty<int>(EPlayerCustomPropertyKey.Team, selectedTeam);
+
+        Debug.Log($"Set Local Player Team ({selectedTeam})");
+    }
+
+    // --------------------------------------------------
+    // Photon Callback
+
+    public override void OnJoinedRoom()
+    {
+        base.OnJoinedRoom();
+
+        SetMyTeamOnJoinRoom();
+
     }
 }

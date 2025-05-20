@@ -43,6 +43,11 @@ public class PhotonPlayerMgr : SingletonPun<PhotonPlayerMgr>
         PhotonNetwork.LocalPlayer.SetCustomProperties(customProperties);
     }
 
+    /// <summary>
+    /// 전체 플레이어의 씬 로드 확인
+    /// </summary>
+    /// <param name="scene"></param>
+    /// <returns></returns>
     public bool IsAllPlayerInTargetScene(EScene scene)
     {
         List<Player> playerList = PhotonNetwork.CurrentRoom.Players.Values.ToList();

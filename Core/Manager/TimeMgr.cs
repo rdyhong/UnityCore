@@ -1,6 +1,7 @@
+using System;
 using UnityEngine;
 
-public class TimeMgr
+public static class TimeMgr
 {
     public static float ObjTimeScale = 1;
     public static float ObjDeltaTime
@@ -60,4 +61,8 @@ public class TimeMgr
         }
     }
 
+    public static double GetUtcTimeSeconds()
+    {
+        return (DateTime.UtcNow - DateTime.UnixEpoch).TotalSeconds;
+    }
 }

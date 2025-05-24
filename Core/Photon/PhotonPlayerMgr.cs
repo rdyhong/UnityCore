@@ -68,6 +68,15 @@ public class PhotonPlayerMgr : SingletonPun<PhotonPlayerMgr>
         PhotonNetwork.LocalPlayer.NickName = n;
     }
 
+    public Player[] GetPlayerSortedByActorNumber()
+    {
+        Player[] sortedByActorNumber = PhotonNetwork.PlayerList
+            .OrderBy(player => player.ActorNumber)
+            .ToArray();
+
+        return sortedByActorNumber;
+    }
+
     /// <summary>
     /// 룸 입장시점 내 팀 자동 세팅
     /// </summary>

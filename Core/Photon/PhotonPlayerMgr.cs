@@ -43,6 +43,11 @@ public class PhotonPlayerMgr : SingletonPun<PhotonPlayerMgr>
         PhotonNetwork.LocalPlayer.SetCustomProperties(customProperties);
     }
 
+    public int GetMyTeamIdx()
+    {
+        return PhotonPlayerMgr.Inst.GetCustomProperty<int>(PhotonNetwork.LocalPlayer, EPlayerCustomPropertyKey.Team);
+    }
+
     /// <summary>
     /// 전체 플레이어의 씬 로드 확인
     /// </summary>

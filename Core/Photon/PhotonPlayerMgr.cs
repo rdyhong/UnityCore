@@ -43,6 +43,10 @@ public class PhotonPlayerMgr : SingletonPun<PhotonPlayerMgr>
         PhotonNetwork.LocalPlayer.SetCustomProperties(customProperties);
     }
 
+    /// <summary>
+    /// 나의 팀 인덱스 리턴
+    /// </summary>
+    /// <returns></returns>
     public int GetMyTeamIdx()
     {
         return PhotonPlayerMgr.Inst.GetCustomProperty<int>(PhotonNetwork.LocalPlayer, EPlayerCustomPropertyKey.Team);

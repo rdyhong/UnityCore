@@ -49,4 +49,12 @@ public class PhotonMgr : Singleton<PhotonMgr>
     {
         return PhotonNetwork.PlayerList;
     }
+
+    public static T GetObjectFromViewId<T>(int viewId) where T : Object
+    {
+        PhotonView foundPv = PhotonView.Find(viewId);
+        if (foundPv == null) return null;
+
+        return PhotonView.Find(viewId).GetComponent<T>();
+    }
 }

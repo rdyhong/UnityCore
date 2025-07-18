@@ -50,7 +50,7 @@ public class PhotonMgr : Singleton<PhotonMgr>
         return PhotonNetwork.PlayerList;
     }
 
-    public static T GetObjectFromViewId<T>(int viewId) where T : Object
+    public static T GetObjectFromViewId<T>(int viewId) where T : class
     {
         PhotonView foundPv = PhotonView.Find(viewId);
         if (foundPv == null) return null;

@@ -9,6 +9,9 @@ public class PhotonMgr : Singleton<PhotonMgr>
 {
     public IEnumerator InitializeCo()
     {
+        PhotonNetwork.PhotonServerSettings.AppSettings.AppVersion = $"{Application.version}";
+        Debug.Log($"{Application.version}");
+
         PhotonNetwork.ConnectUsingSettings();
 
         // 클라이언트 세팅 완료

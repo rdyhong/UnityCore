@@ -1,6 +1,7 @@
 using UnityEngine;
 using System;
 using System.Text;
+using System.Linq;
 
 public static class LocalSaveMgr
 {
@@ -34,7 +35,6 @@ public static class LocalSaveMgr
         string decrypted = LoadString(key);
         if (int.TryParse(decrypted, out int result))
             return result;
-
         return defaultValue;
     }
 
@@ -48,8 +48,41 @@ public static class LocalSaveMgr
         string decrypted = LoadString(key);
         if (float.TryParse(decrypted, out float result))
             return result;
-
         return defaultValue;
+    }
+
+    // int 배열 저장
+    public static void SaveIntArray(string key, int[] array)
+    {
+        if (array == null || array.Length == 0)
+        {
+            SaveString(key, "");
+            return;
+        }
+
+        string arrayString = string.Join(",", array.Select(x => x.ToString()).ToArray());
+        SaveString(key, arrayString);
+    }
+
+    // int 배열 로드
+    public static int[] LoadIntArray(string key, int[] defaultValue = null)
+    {
+        string decrypted = LoadString(key);
+
+        if (string.IsNullOrEmpty(decrypted))
+            return defaultValue ?? new int[0];
+
+        try
+        {
+            return decrypted.Split(',')
+                           .Select(x => int.Parse(x.Trim()))
+                           .ToArray();
+        }
+        catch
+        {
+            Debug.LogWarning($"int 배열 파싱 실패: {key}. 기본값을 반환합니다.");
+            return defaultValue ?? new int[0];
+        }
     }
 
     public static void SaveString(string key, string value)
@@ -62,7 +95,6 @@ public static class LocalSaveMgr
     public static string LoadString(string key, string defaultValue = "")
     {
         if (!PlayerPrefs.HasKey(key)) return defaultValue;
-
         string encrypted = PlayerPrefs.GetString(key);
         string decrypted = Decrypt(encrypted);
         return string.IsNullOrEmpty(decrypted) ? defaultValue : decrypted;

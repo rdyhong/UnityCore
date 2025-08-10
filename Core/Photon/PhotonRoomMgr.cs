@@ -38,6 +38,20 @@ public class PhotonRoomMgr : SingletonPun<PhotonRoomMgr>
         return options;
     }
 
+    public void LeaveRoom(Action<bool> resultCb = null)
+    {
+        // 포톤이 연결되어 있는지 & 방에 있는지 체크
+        if (!PhotonNetwork.IsConnectedAndReady || !PhotonNetwork.InRoom)
+        {
+            Debug.LogWarning("방에 있지 않거나 연결되지 않았습니다.");
+            resultCb?.Invoke(false);
+            return;
+        }
+
+        _resultCb = resultCb;
+        PhotonNetwork.LeaveRoom();
+    }
+
     public void ResetCustomProperty()
     {
         PhotonHashTable customProperties = new PhotonHashTable
@@ -86,6 +100,12 @@ public class PhotonRoomMgr : SingletonPun<PhotonRoomMgr>
         _resultCb?.Invoke(false);
         _resultCb = null;
         Debug.Log($"{returnCode}:{message}");
+    }
+
+    public override void OnLeftRoom()
+    {
+        _resultCb?.Invoke(true);
+        _resultCb = null;
     }
 
     public void JoinRandomRoom(Action<bool> resultCb = null)

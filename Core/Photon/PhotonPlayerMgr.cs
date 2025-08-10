@@ -42,6 +42,21 @@ public class PhotonPlayerMgr : SingletonPun<PhotonPlayerMgr>
 
         PhotonNetwork.LocalPlayer.SetCustomProperties(customProperties);
     }
+    /// <summary>
+    /// Master Client Only
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="key"></param>
+    /// <param name="value"></param>
+    public void SetOtherUserCustomProperty<T>(Player player, EPlayerCustomPropertyKey key, T value)
+    {
+        PhotonHashTable customProperties = new PhotonHashTable
+        {
+            { $"{key.ToString()}", (T)value }
+        };
+
+        player.SetCustomProperties(customProperties);
+    }
 
     /// <summary>
     /// 나의 팀 인덱스 리턴
@@ -133,7 +148,7 @@ public class PhotonPlayerMgr : SingletonPun<PhotonPlayerMgr>
     {
         base.OnJoinedRoom();
 
-        SetMyTeamOnJoinRoom();
+        //SetMyTeamOnJoinRoom();
 
     }
 }

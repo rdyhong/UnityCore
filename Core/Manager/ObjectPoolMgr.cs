@@ -2,8 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AddressableAssets;
-using UnityEngine.ResourceManagement.AsyncOperations;
+//using UnityEngine.AddressableAssets;
+//using UnityEngine.ResourceManagement.AsyncOperations;
 
 public interface IPoolingObject
 {
@@ -114,156 +114,156 @@ public class ObjectPoolMgr : Singleton<ObjectPoolMgr>
     }
 
     // Addressable 프리팹 미리 로드 (게임 시작 시 호출)
-    public void PreloadAddressable(string addressableKey)
-    {
-        if (_addressablePrefabCache.ContainsKey(addressableKey))
-        {
-            return; // 이미 로드됨
-        }
+    //public void PreloadAddressable(string addressableKey)
+    //{
+    //    if (_addressablePrefabCache.ContainsKey(addressableKey))
+    //    {
+    //        return; // 이미 로드됨
+    //    }
 
-        var handle = Addressables.LoadAssetAsync<GameObject>(addressableKey);
-        handle.Completed += (AsyncOperationHandle<GameObject> obj) =>
-        {
-            if (obj.Status == AsyncOperationStatus.Succeeded)
-            {
-                _addressablePrefabCache[addressableKey] = obj.Result;
-                Debug.Log($"Preloaded addressable: {addressableKey}");
-            }
-            else
-            {
-                Debug.LogError($"Failed to preload addressable: {addressableKey}");
-            }
-        };
-    }
+    //    var handle = Addressables.LoadAssetAsync<GameObject>(addressableKey);
+    //    handle.Completed += (AsyncOperationHandle<GameObject> obj) =>
+    //    {
+    //        if (obj.Status == AsyncOperationStatus.Succeeded)
+    //        {
+    //            _addressablePrefabCache[addressableKey] = obj.Result;
+    //            Debug.Log($"Preloaded addressable: {addressableKey}");
+    //        }
+    //        else
+    //        {
+    //            Debug.LogError($"Failed to preload addressable: {addressableKey}");
+    //        }
+    //    };
+    //}
 
-    // 여러 Addressable 프리팹 한번에 로드
-    public void PreloadAddressables(params string[] addressableKeys)
-    {
-        foreach (string key in addressableKeys)
-        {
-            PreloadAddressable(key);
-        }
-    }
+    //// 여러 Addressable 프리팹 한번에 로드
+    //public void PreloadAddressables(params string[] addressableKeys)
+    //{
+    //    foreach (string key in addressableKeys)
+    //    {
+    //        PreloadAddressable(key);
+    //    }
+    //}
 
-    // Default Local Group의 모든 Addressable 프리팹 미리 로드
-    public void PreloadMonsterBody()
-    {
-        StartCoroutine(PreloadMonsterBodyCoroutine());
-    }
+    //// Default Local Group의 모든 Addressable 프리팹 미리 로드
+    //public void PreloadMonsterBody()
+    //{
+    //    StartCoroutine(PreloadMonsterBodyCoroutine());
+    //}
 
-    private IEnumerator PreloadMonsterBodyCoroutine()
-    {
-        // Addressable 카탈로그에서 모든 위치 정보 가져오기
-        var catalogHandle = Addressables.LoadResourceLocationsAsync("body_monster");
-        yield return catalogHandle;
+    //private IEnumerator PreloadMonsterBodyCoroutine()
+    //{
+    //    // Addressable 카탈로그에서 모든 위치 정보 가져오기
+    //    var catalogHandle = Addressables.LoadResourceLocationsAsync("body_monster");
+    //    yield return catalogHandle;
 
-        if (catalogHandle.Status == AsyncOperationStatus.Succeeded)
-        {
-            var locations = catalogHandle.Result;
-            Debug.Log($"Found {locations.Count} addressable assets in catalog");
+    //    if (catalogHandle.Status == AsyncOperationStatus.Succeeded)
+    //    {
+    //        var locations = catalogHandle.Result;
+    //        Debug.Log($"Found {locations.Count} addressable assets in catalog");
 
-            foreach (var location in locations)
-            {
-                // GameObject 타입만 필터링
-                if (location.ResourceType == typeof(GameObject))
-                {
-                    string key = location.PrimaryKey;
+    //        foreach (var location in locations)
+    //        {
+    //            // GameObject 타입만 필터링
+    //            if (location.ResourceType == typeof(GameObject))
+    //            {
+    //                string key = location.PrimaryKey;
 
-                    // 이미 로드된 경우 스킵
-                    if (!_addressablePrefabCache.ContainsKey(key))
-                    {
-                        PreloadAddressable(key);
-                        Debug.Log($"Preloading: {key}");
-                    }
-                }
-            }
-        }
-        else
-        {
-            Debug.LogError("Failed to load addressable catalog");
-        }
+    //                // 이미 로드된 경우 스킵
+    //                if (!_addressablePrefabCache.ContainsKey(key))
+    //                {
+    //                    PreloadAddressable(key);
+    //                    Debug.Log($"Preloading: {key}");
+    //                }
+    //            }
+    //        }
+    //    }
+    //    else
+    //    {
+    //        Debug.LogError("Failed to load addressable catalog");
+    //    }
 
-        Addressables.Release(catalogHandle);
-    }
+    //    Addressables.Release(catalogHandle);
+    //}
 
-    // 특정 레이블의 모든 Addressable 프리팹 미리 로드
-    public void PreloadByLabel(string label)
-    {
-        StartCoroutine(PreloadByLabelCoroutine(label));
-    }
+    //// 특정 레이블의 모든 Addressable 프리팹 미리 로드
+    //public void PreloadByLabel(string label)
+    //{
+    //    StartCoroutine(PreloadByLabelCoroutine(label));
+    //}
 
-    private IEnumerator PreloadByLabelCoroutine(string label)
-    {
-        var handle = Addressables.LoadResourceLocationsAsync(label);
-        yield return handle;
+    //private IEnumerator PreloadByLabelCoroutine(string label)
+    //{
+    //    var handle = Addressables.LoadResourceLocationsAsync(label);
+    //    yield return handle;
 
-        if (handle.Status == AsyncOperationStatus.Succeeded)
-        {
-            var locations = handle.Result;
-            Debug.Log($"Found {locations.Count} assets with label '{label}'");
+    //    if (handle.Status == AsyncOperationStatus.Succeeded)
+    //    {
+    //        var locations = handle.Result;
+    //        Debug.Log($"Found {locations.Count} assets with label '{label}'");
 
-            foreach (var location in locations)
-            {
-                if (location.ResourceType == typeof(GameObject))
-                {
-                    string key = location.PrimaryKey;
+    //        foreach (var location in locations)
+    //        {
+    //            if (location.ResourceType == typeof(GameObject))
+    //            {
+    //                string key = location.PrimaryKey;
 
-                    if (!_addressablePrefabCache.ContainsKey(key))
-                    {
-                        PreloadAddressable(key);
-                        Debug.Log($"Preloading by label '{label}': {key}");
-                    }
-                }
-            }
-        }
-        else
-        {
-            Debug.LogError($"Failed to load assets with label '{label}'");
-        }
+    //                if (!_addressablePrefabCache.ContainsKey(key))
+    //                {
+    //                    PreloadAddressable(key);
+    //                    Debug.Log($"Preloading by label '{label}': {key}");
+    //                }
+    //            }
+    //        }
+    //    }
+    //    else
+    //    {
+    //        Debug.LogError($"Failed to load assets with label '{label}'");
+    //    }
 
-        Addressables.Release(handle);
-    }
+    //    Addressables.Release(handle);
+    //}
 
-    // 모든 GameObject 타입 Addressable 미리 로드 (전체)
-    public void PreloadAllGameObjects()
-    {
-        StartCoroutine(PreloadAllGameObjectsCoroutine());
-    }
+    //// 모든 GameObject 타입 Addressable 미리 로드 (전체)
+    //public void PreloadAllGameObjects()
+    //{
+    //    StartCoroutine(PreloadAllGameObjectsCoroutine());
+    //}
 
-    private IEnumerator PreloadAllGameObjectsCoroutine()
-    {
-        var handle = Addressables.LoadResourceLocationsAsync(typeof(GameObject));
-        yield return handle;
+    //private IEnumerator PreloadAllGameObjectsCoroutine()
+    //{
+    //    var handle = Addressables.LoadResourceLocationsAsync(typeof(GameObject));
+    //    yield return handle;
 
-        if (handle.Status == AsyncOperationStatus.Succeeded)
-        {
-            var locations = handle.Result;
-            Debug.Log($"Found {locations.Count} GameObject addressables");
+    //    if (handle.Status == AsyncOperationStatus.Succeeded)
+    //    {
+    //        var locations = handle.Result;
+    //        Debug.Log($"Found {locations.Count} GameObject addressables");
 
-            foreach (var location in locations)
-            {
-                string key = location.PrimaryKey;
+    //        foreach (var location in locations)
+    //        {
+    //            string key = location.PrimaryKey;
 
-                if (!_addressablePrefabCache.ContainsKey(key))
-                {
-                    PreloadAddressable(key);
-                    Debug.Log($"Preloading GameObject: {key}");
-                }
-            }
-        }
-        else
-        {
-            Debug.LogError("Failed to load GameObject addressables");
-        }
+    //            if (!_addressablePrefabCache.ContainsKey(key))
+    //            {
+    //                PreloadAddressable(key);
+    //                Debug.Log($"Preloading GameObject: {key}");
+    //            }
+    //        }
+    //    }
+    //    else
+    //    {
+    //        Debug.LogError("Failed to load GameObject addressables");
+    //    }
 
-        Addressables.Release(handle);
-    }
+    //    Addressables.Release(handle);
+    //}
 
-    // Addressable이 로드되었는지 확인
-    public bool IsAddressableLoaded(string addressableKey)
-    {
-        return _addressablePrefabCache.ContainsKey(addressableKey);
-    }
+    //// Addressable이 로드되었는지 확인
+    //public bool IsAddressableLoaded(string addressableKey)
+    //{
+    //    return _addressablePrefabCache.ContainsKey(addressableKey);
+    //}
 
     // 기존 Recycle 함수 (그대로 유지)
     public void Recycle(GameObject obj)
@@ -322,39 +322,39 @@ public class ObjectPoolMgr : Singleton<ObjectPoolMgr>
     }
 }
 
-public class PoolingUsageExample : MonoBehaviour
-{
-    void Start()
-    {
-        var poolMgr = ObjectPoolMgr.Inst;
+//public class PoolingUsageExample : MonoBehaviour
+//{
+//    void Start()
+//    {
+//        var poolMgr = ObjectPoolMgr.Inst;
 
-        // 방법 1: 특정 키들 미리 로드
-        poolMgr.PreloadAddressables("AddressableBullet", "AddressableEnemy", "AddressableEffect");
+//        // 방법 1: 특정 키들 미리 로드
+//        poolMgr.PreloadAddressables("AddressableBullet", "AddressableEnemy", "AddressableEffect");
 
-        // 방법 2: Default Local Group 전체 미리 로드
-        poolMgr.PreloadMonsterBody();
+//        // 방법 2: Default Local Group 전체 미리 로드
+//        poolMgr.PreloadMonsterBody();
 
-        // 방법 3: 특정 레이블의 모든 에셋 미리 로드
-        poolMgr.PreloadByLabel("Weapons");
+//        // 방법 3: 특정 레이블의 모든 에셋 미리 로드
+//        poolMgr.PreloadByLabel("Weapons");
 
-        // 방법 4: 모든 GameObject 타입 Addressable 미리 로드
-        // poolMgr.PreloadAllGameObjects();
-    }
+//        // 방법 4: 모든 GameObject 타입 Addressable 미리 로드
+//        // poolMgr.PreloadAllGameObjects();
+//    }
 
-    void Update()
-    {
-        var poolMgr = ObjectPoolMgr.Inst;
+//    void Update()
+//    {
+//        var poolMgr = ObjectPoolMgr.Inst;
 
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            // 기존 Resources 방식
-            var resourceBullet = poolMgr.Spawn<Bullet>("Prefabs/Bullet");
+//        if (Input.GetKeyDown(KeyCode.Space))
+//        {
+//            // 기존 Resources 방식
+//            var resourceBullet = poolMgr.Spawn<Bullet>("Prefabs/Bullet");
 
-            // 새로운 Addressables 방식 (미리 로드된 경우만)
-            if (poolMgr.IsAddressableLoaded("AddressableBullet"))
-            {
-                var addressableBullet = poolMgr.SpawnAddressable<Bullet>("AddressableBullet");
-            }
-        }
-    }
-}
+//            // 새로운 Addressables 방식 (미리 로드된 경우만)
+//            if (poolMgr.IsAddressableLoaded("AddressableBullet"))
+//            {
+//                var addressableBullet = poolMgr.SpawnAddressable<Bullet>("AddressableBullet");
+//            }
+//        }
+//    }
+//}

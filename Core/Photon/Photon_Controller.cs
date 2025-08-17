@@ -10,18 +10,6 @@ public partial class Photon_Controller : MonoBehaviourPunCallbacks
 {
     PhotonView pv;
 
-    public void LoadScene(EScene _scene)
-    {
-        photonView.RPC(nameof(RPC_LoadScene), RpcTarget.All);
-        
-    }
-
-    [PunRPC]
-    void RPC_LoadScene()
-    {
-        SceneMgr.Inst.LoadScene(EScene.InGameScene);
-    }
-
     #region CallBacks
 
     public override void OnConnectedToMaster()

@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
 using Photon.Realtime;
+using Steamworks;
 
 public class PhotonMgr : Singleton<PhotonMgr>
 {
@@ -26,7 +27,7 @@ public class PhotonMgr : Singleton<PhotonMgr>
         PhotonNetwork.JoinLobby();
         yield return new WaitUntil(() => PhotonNetwork.NetworkClientState == ClientState.JoinedLobby);
         Debug.Log("JoinedLobby");
-        PhotonPlayerMgr.Inst.SetNickName($"Player_{UnityEngine.Random.Range(0, 10000)}");
+        PhotonPlayerMgr.Inst.SetNickName($"{SteamFriends.GetPersonaName()}");
     }
 
 

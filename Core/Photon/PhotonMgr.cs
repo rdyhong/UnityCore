@@ -28,6 +28,7 @@ public class PhotonMgr : Singleton<PhotonMgr>
         yield return new WaitUntil(() => PhotonNetwork.NetworkClientState == ClientState.JoinedLobby);
         Debug.Log("JoinedLobby");
         PhotonPlayerMgr.Inst.SetNickName($"{SteamFriends.GetPersonaName()}");
+        Debug.Log("포톤 초기화 성공");
     }
 
 

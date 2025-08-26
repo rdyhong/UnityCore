@@ -28,7 +28,7 @@ public class ObjectPoolMgr : Singleton<ObjectPoolMgr>, IPunPrefabPool
         PhotonNetwork.PrefabPool = this;
     }
 
-    #region ===== 기존 로컬 풀 기능 (건드리지 않음) =====
+    #region ===== 기존 로컬 풀 기능 =====
     public T Spawn<T>(string path) where T : MonoBehaviour
     {
         GameObject go = null;
@@ -85,6 +85,23 @@ public class ObjectPoolMgr : Singleton<ObjectPoolMgr>, IPunPrefabPool
         obj.transform.SetParent(_parent);
     }
 
+    public void Preload(string path, int count)
+    {
+        GameObject go = null;
+        if (!_objPool.ContainsKey(path))
+        {
+            _objPool[path] = new List<GameObject>();
+        }
+
+        for(int i = 0; i < count; i++)
+        {
+            go = Instantiate(Resources.Load(path) as GameObject);
+            go.transform.SetParent(_parent);
+            go.name = path;
+            go.SetActive(false);
+        }
+    }
+
     public void LoadAsset<T>(ref T v, string path) where T : Object
     {
         T result = Resources.Load<T>(path);
@@ -118,7 +135,7 @@ public class ObjectPoolMgr : Singleton<ObjectPoolMgr>, IPunPrefabPool
     }
     #endregion
 
-    #region ===== Photon Instantiate 풀링 (신규 추가) =====
+    #region ===== Photon Instantiate 풀링 =====
     public GameObject Instantiate(string prefabId, Vector3 position, Quaternion rotation)
     {
         GameObject obj = null;

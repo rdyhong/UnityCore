@@ -58,7 +58,11 @@ public class ObjectPoolMgr : Singleton<ObjectPoolMgr>, IPunPrefabPool
         }
         _objPoolUsing[path].Add(go);
         go.name = path;
-        go.GetComponent<IPoolingObject>().OnSpawn();
+        if(go.TryGetComponent(out IPoolingObject poolObj))
+        {
+            poolObj.OnSpawn();
+        }
+        //go.GetComponent<IPoolingObject>().OnSpawn();
         go.SetActive(true);
         return go.GetComponent<T>();
     }
@@ -79,8 +83,13 @@ public class ObjectPoolMgr : Singleton<ObjectPoolMgr>, IPunPrefabPool
         }
         _objPool[path].Add(obj);
 
-        var poolingObject = obj.GetComponent<IPoolingObject>();
-        poolingObject?.OnRecycle();
+        if (obj.TryGetComponent(out IPoolingObject poolObj))
+        {
+            poolObj.OnRecycle();
+        }
+
+        //var poolingObject = obj.GetComponent<IPoolingObject>();
+        //poolingObject?.OnRecycle();
 
         obj.transform.SetParent(_parent);
     }

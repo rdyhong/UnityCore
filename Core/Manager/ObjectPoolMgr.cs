@@ -154,11 +154,13 @@ public class ObjectPoolMgr : Singleton<ObjectPoolMgr>, IPunPrefabPool
             obj = queue.Dequeue();
             obj.transform.SetPositionAndRotation(position, rotation);
             obj.SetActive(true);
+            Debug.Log("Spawnd in Pool");
         }
         else
         {
             GameObject prefab = Resources.Load<GameObject>(prefabId);
             obj = Object.Instantiate(prefab, position, rotation);
+            Debug.Log("Spawn new");
         }
 
         var poolingObj = obj.GetComponent<IPoolingObject>();

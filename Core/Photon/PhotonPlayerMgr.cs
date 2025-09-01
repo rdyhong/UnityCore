@@ -11,6 +11,7 @@ public enum EPlayerCustomPropertyKey
     CharacterSkin,  // int
     Team,           // int (0, 1)
     CurrentScene,   // string
+    Deck,           // int[]
 }
 
 public class PhotonPlayerMgr : SingletonPun<PhotonPlayerMgr>
@@ -21,7 +22,8 @@ public class PhotonPlayerMgr : SingletonPun<PhotonPlayerMgr>
         {
             { EPlayerCustomPropertyKey.CharacterSkin.ToString(), 0 },
             { EPlayerCustomPropertyKey.Team.ToString(), -1 },
-            { EPlayerCustomPropertyKey.CurrentScene.ToString(), EScene.LobbyScene.ToString() }
+            { EPlayerCustomPropertyKey.CurrentScene.ToString(), EScene.LobbyScene.ToString() },
+            { EPlayerCustomPropertyKey.Deck.ToString(), UserDataMgr.Inst.PlayerSaveData.equipedDeckIds }
         };
 
         // 내 플레이어에 프로퍼티 설정

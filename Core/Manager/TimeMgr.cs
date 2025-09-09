@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System;
 using UnityEngine;
 
@@ -61,8 +62,17 @@ public static class TimeMgr
         }
     }
 
+    private static double _lastGetTime = double.MinValue;
+
     public static double GetUtcTimeSeconds()
     {
-        return (DateTime.UtcNow - DateTime.UnixEpoch).TotalSeconds;
+        double now = PhotonNetwork.Time; // (DateTime.UtcNow - DateTime.UnixEpoch).TotalSeconds;
+        if (now < _lastGetTime)
+        {
+            return _lastGetTime; // 역행 방지
+        }
+
+        _lastGetTime = now; // 갱신
+        return now;
     }
 }

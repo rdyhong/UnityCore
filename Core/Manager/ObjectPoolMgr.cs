@@ -88,9 +88,6 @@ public class ObjectPoolMgr : Singleton<ObjectPoolMgr>, IPunPrefabPool
             poolObj.OnRecycle();
         }
 
-        //var poolingObject = obj.GetComponent<IPoolingObject>();
-        //poolingObject?.OnRecycle();
-
         obj.transform.SetParent(_parent);
     }
 

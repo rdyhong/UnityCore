@@ -9,7 +9,7 @@ using Steamworks;
 public enum ELobbyType
 {
     QuickMatch = 0,
-    Custom,
+    CustomMatch,
     Rank
 }
 
@@ -67,19 +67,26 @@ public class PhotonMgr : Singleton<PhotonMgr>
 
     public IEnumerator JoinLobbyCo(ELobbyType lobbyType)
     {
-        if (PhotonNetwork.InLobby)
+        // 현재 로비 타입 확인
+        if (PhotonNetwork.CurrentLobby != null)
         {
+            // 같은 로비면 스킵
+            if (PhotonNetwork.CurrentLobby?.Name == lobbyType.ToString())
+            {
+                Debug.Log($"Already in {lobbyType} lobby");
+                _joinLobbyCo = null;
+                yield break;
+            }
+
             PhotonNetwork.LeaveLobby();
-            yield return new WaitUntil(() => !PhotonNetwork.InLobby);
-            Debug.Log($"Leave Lobby)");
+            yield return new WaitUntil(() => !PhotonNetwork.InLobby && PhotonNetwork.CurrentLobby == null);
+            Debug.Log($"Leave Lobby");
             yield return null;
         }
 
         TypedLobby lobbyTyped = new TypedLobby(lobbyType.ToString(), LobbyType.Default);
         PhotonNetwork.JoinLobby(lobbyTyped);
-
         yield return new WaitUntil(() => PhotonNetwork.NetworkClientState == ClientState.JoinedLobby);
-
         Debug.Log($"Joined Lobby({lobbyType})");
         _joinLobbyCo = null;
     }

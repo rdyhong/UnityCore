@@ -14,6 +14,13 @@ public enum ERoomCustomPropertyKey
 public class PhotonRoomMgr : SingletonPun<PhotonRoomMgr>
 {
     private Action<bool> _resultCb = null;
+
+    public List<RoomInfo> RoomList { get; private set; } = new List<RoomInfo>();
+
+    public void Initialize()
+    {
+
+    }
     
     public void CreateRoom(string roomName = null, RoomOptions option = null, Action<bool> resultCb = null)
     {
@@ -135,5 +142,12 @@ public class PhotonRoomMgr : SingletonPun<PhotonRoomMgr>
     {
         _resultCb?.Invoke(false);
         Debug.Log($"{returnCode}:{message}");
+    }
+
+    public override void OnRoomListUpdate(List<RoomInfo> roomList)
+    {
+        base.OnRoomListUpdate(roomList);
+
+        RoomList = roomList;
     }
 }

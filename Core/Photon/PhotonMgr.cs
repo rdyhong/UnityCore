@@ -33,6 +33,8 @@ public class PhotonMgr : Singleton<PhotonMgr>
         Debug.Log("Try Connect To Master Server...");
         yield return new WaitUntil(() => PhotonNetwork.NetworkClientState == ClientState.ConnectedToMasterServer);
 
+        PhotonRoomMgr.Inst.Initialize();
+
         PhotonPlayerMgr.Inst.SetNickName($"{SteamFriends.GetPersonaName()}");
 
         // 로비 접속 대기
@@ -68,7 +70,7 @@ public class PhotonMgr : Singleton<PhotonMgr>
     public IEnumerator JoinLobbyCo(ELobbyType lobbyType)
     {
         // 현재 로비 타입 확인
-        if (PhotonNetwork.CurrentLobby != null)
+        if (PhotonNetwork.InLobby)
         {
             // 같은 로비면 스킵
             if (PhotonNetwork.CurrentLobby?.Name == lobbyType.ToString())
@@ -79,7 +81,7 @@ public class PhotonMgr : Singleton<PhotonMgr>
             }
 
             PhotonNetwork.LeaveLobby();
-            yield return new WaitUntil(() => !PhotonNetwork.InLobby && PhotonNetwork.CurrentLobby == null);
+            yield return new WaitUntil(() => !PhotonNetwork.InLobby);
             Debug.Log($"Leave Lobby");
             yield return null;
         }

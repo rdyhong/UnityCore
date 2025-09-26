@@ -11,6 +11,7 @@ public enum EPlayerCustomPropertyKey
     CharacterSkin,  // int
     Team,           // int (0, 1)
     CurrentScene,   // string
+    Hero,
     Deck,           // int[]
 }
 
@@ -23,6 +24,7 @@ public class PhotonPlayerMgr : SingletonPun<PhotonPlayerMgr>
             { EPlayerCustomPropertyKey.CharacterSkin.ToString(), 0 },
             { EPlayerCustomPropertyKey.Team.ToString(), -1 },
             { EPlayerCustomPropertyKey.CurrentScene.ToString(), EScene.LobbyScene.ToString() },
+            { EPlayerCustomPropertyKey.Hero.ToString(), UserDataMgr.Inst.PlayerSaveData.equipedHeroId },
             { EPlayerCustomPropertyKey.Deck.ToString(), UserDataMgr.Inst.PlayerSaveData.equipedDeckIds }
         };
 

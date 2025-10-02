@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -36,6 +37,8 @@ public class SceneMgr : Singleton<SceneMgr>
         loadSceneKind = sceneKind;
         loadCallback = callback;
         //curScene = gameScenes[sceneKind];
+
+        SoundMgr.Inst.StopBGM();
 
         StartCoroutine(LoadAsyncScene());
     }

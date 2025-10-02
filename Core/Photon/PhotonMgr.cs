@@ -23,6 +23,7 @@ public class PhotonMgr : Singleton<PhotonMgr>
         PhotonNetwork.PhotonServerSettings.AppSettings.AppVersion = $"{Application.version}";
         Debug.Log($"{Application.version}");
 
+        PhotonNetwork.PhotonServerSettings.AppSettings.FixedRegion = "kr";
         PhotonNetwork.ConnectUsingSettings();
 
         // 클라이언트 세팅 완료

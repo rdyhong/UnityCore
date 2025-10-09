@@ -125,6 +125,7 @@ public class ObjectPoolMgr : Singleton<ObjectPoolMgr>, IPunPrefabPool
             var objectsToRecycle = new List<GameObject>(_photonPoolUsing[key]);
             foreach (GameObject obj in objectsToRecycle)
             {
+                //PhotonNetwork.Destroy(obj);
                 Destroy(obj); // Photon 풀의 Destroy 메서드 사용
             }
         }

@@ -67,12 +67,12 @@ public static class TimeMgr
     public static double GetUtcTimeSeconds()
     {
         double now = PhotonNetwork.Time; // (DateTime.UtcNow - DateTime.UnixEpoch).TotalSeconds;
-        if (now < _lastGetTime)
-        {
-            return _lastGetTime; // 역행 방지
-        }
+        //if (now < _lastGetTime)
+        //{
+        //    return _lastGetTime; // 역행 방지
+        //}
 
-        _lastGetTime = now; // 갱신
+        //_lastGetTime = now; // 갱신
         return now;
     }
 }

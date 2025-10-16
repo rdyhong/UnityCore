@@ -24,4 +24,13 @@ public class GameMgr : Singleton<GameMgr>
         Application.runInBackground = false;
     }
 
+
+    public void CloseGame()
+    {
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#else
+        Application.Quit();
+#endif
+    }
 }

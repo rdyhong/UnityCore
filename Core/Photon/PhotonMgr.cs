@@ -55,6 +55,8 @@ public class PhotonMgr : SingletonPun<PhotonMgr>
 
     private IEnumerator _joinLobbyCo = null;
 
+    public ELobbyType LastLobbyType { get; private set; }
+
     public IEnumerator InitializeCo()
     {
         PhotonNetwork.PhotonServerSettings.AppSettings.AppVersion = $"{Application.version}";
@@ -123,7 +125,6 @@ public class PhotonMgr : SingletonPun<PhotonMgr>
             if (PhotonNetwork.CurrentLobby?.Name == lobbyType.ToString())
             {
                 Debug.Log($"Already in {lobbyType} lobby");
-                _joinLobbyCo = null;
                 yield break;
             }
 
@@ -136,8 +137,8 @@ public class PhotonMgr : SingletonPun<PhotonMgr>
         TypedLobby lobbyTyped = new TypedLobby(lobbyType.ToString(), LobbyType.Default);
         PhotonNetwork.JoinLobby(lobbyTyped);
         yield return new WaitUntil(() => PhotonNetwork.NetworkClientState == ClientState.JoinedLobby);
+        LastLobbyType = lobbyType;
         Debug.Log($"Joined Lobby({lobbyType})");
-        _joinLobbyCo = null;
     }
 
     public static int GetPing()

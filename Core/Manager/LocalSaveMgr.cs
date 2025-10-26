@@ -100,6 +100,40 @@ public static class LocalSaveMgr
         return string.IsNullOrEmpty(decrypted) ? defaultValue : decrypted;
     }
 
+    public static DateTime LoadTime(string key, DateTime? defaultValue = null)
+    {
+        string timeString = LoadString(key);
+
+        if (string.IsNullOrEmpty(timeString))
+        {
+            return defaultValue ?? DateTime.Now;
+        }
+
+        try
+        {
+            // Ticks 방식으로 저장된 경우
+            if (long.TryParse(timeString, out long ticks))
+            {
+                return new DateTime(ticks);
+            }
+
+            // ISO 8601 문자열 형식으로 저장된 경우
+            return DateTime.Parse(timeString);
+        }
+        catch
+        {
+            Debug.LogWarning($"DateTime 파싱 실패: {key}. 기본값을 반환합니다.");
+            return defaultValue ?? DateTime.Now;
+        }
+    }
+
+    public static void SaveTime(string key, DateTime value)
+    {
+        // Ticks 방식 (더 정확하고 안전함)
+        string timeString = value.Ticks.ToString();
+        SaveString(key, timeString);
+    }
+
     public static void DeleteKey(string key)
     {
         PlayerPrefs.DeleteKey(key);

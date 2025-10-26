@@ -75,4 +75,36 @@ public static class TimeMgr
         //_lastGetTime = now; // 갱신
         return now;
     }
+
+
+    public static DateTime GetUtcDateTime()
+    {
+        DateTime now = DateTime.UtcNow;
+        return now;
+    }
+
+    /// <summary>
+    /// date 만큼의 다음날의 00시를 반환
+    /// </summary>
+    /// <param name="date"></param>
+    /// <returns></returns>
+    public static DateTime GetNextDay(int date)
+    {
+        DateTime now = GetUtcDateTime();
+        DateTime today = now.Date; // 오늘 00시 00분 00초
+
+        // day일 후의 00시를 계산
+        DateTime targetDate = today.AddDays(date);
+
+        return targetDate;
+    }
+
+    /// <summary>
+    /// DateTime의 최대값 (9999년 12월 31일 23:59:59)
+    /// </summary>
+    /// <returns></returns>
+    public static DateTime GetMaxDateTime()
+    {
+        return DateTime.MaxValue;
+    }
 }

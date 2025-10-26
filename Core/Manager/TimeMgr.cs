@@ -107,4 +107,35 @@ public static class TimeMgr
     {
         return DateTime.MaxValue;
     }
+
+    /// <summary>
+    /// DateTime의 최솟값
+    /// </summary>
+    /// <returns></returns>
+    public static DateTime GetMinDateTime()
+    {
+        return DateTime.MinValue;
+    }
+
+    /// <summary>
+    /// 특정 날짜가 오늘 자정 기준으로 이전인지 확인
+    /// </summary>
+    /// <param name="targetDate"></param>
+    /// <returns></returns>
+    public static bool IsPastDay(DateTime targetDate)
+    {
+        DateTime todayMidnight = GetUtcDateTime().Date;
+        return targetDate.Date < todayMidnight;
+    }
+
+    /// <summary>
+    /// 특정 날짜가 오늘 자정 기준으로 이후인지 확인
+    /// </summary>
+    /// <param name="targetDate"></param>
+    /// <returns></returns>
+    public static bool IsFutureDay(DateTime targetDate)
+    {
+        DateTime todayMidnight = GetUtcDateTime().Date;
+        return targetDate.Date > todayMidnight;
+    }
 }

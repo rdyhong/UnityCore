@@ -11,7 +11,7 @@ public enum ELobbyType
 {
     QuickMatch = 0,
     CustomMatch,
-    Rank
+    RankMatch
 }
 
 public class RegionInfo

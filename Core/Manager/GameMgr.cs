@@ -25,7 +25,7 @@ public class GameMgr : Singleton<GameMgr>
     }
 
 
-    public void CloseGame()
+    public void ExitGame()
     {
 #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;

@@ -75,7 +75,7 @@ public class PhotonMgr : SingletonPun<PhotonMgr>
 
         PhotonRoomMgr.Inst.Initialize();
 
-        PhotonPlayerMgr.Inst.SetNickName($"{SteamFriends.GetPersonaName()}");
+        PhotonPlayerMgr.Inst.SetNickName($"{LogInPlayFabOnSteamMgr.Inst.DisplayName}");
 
         // 로비 접속 대기
         //PhotonNetwork.JoinLobby();

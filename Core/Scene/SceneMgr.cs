@@ -5,7 +5,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public delegate void LoadCallback();
+
+public enum EScene
+{
+    None = -1,
+    AppStartScene = 0,
+    Title,
+    LobbyScene,
+    InGameScene
+}
 
 /// <summary>
 /// Manage Load scene
@@ -13,53 +21,57 @@ public delegate void LoadCallback();
 public class SceneMgr : Singleton<SceneMgr>
 {
     private EScene loadSceneKind = EScene.None;
-    //private Dictionary<EScene, GameScene> gameScenes = new Dictionary<EScene, GameScene>();
-    private LoadCallback loadCallback;
-    
-    //public GameScene curScene;
+
     public static EScene curSceneKind;
 
     protected override void Awake()
     {
         base.Awake();
-
-        //gameScenes.Add(SceneKind.Splash, new Splash());
-        //gameScenes.Add(SceneKind.Title, new Title());
-        //gameScenes.Add(SceneKind.Lobby, new Lobby());
-        //gameScenes.Add(SceneKind.InGame, new InGame());
     }
 
-    public void LoadScene(EScene sceneKind, LoadCallback callback = null)
+    public void LoadScene(EScene sceneKind, bool force = false)
     {
-        if (sceneKind == EScene.None)
+        if (force)
+        {
+            SceneManager.LoadScene(sceneKind.ToString());
             return;
+        }
+        
+        StartCoroutine(LoadSceneAsync(sceneKind));
+    }
 
+    private IEnumerator LoadSceneAsync(EScene sceneKind)
+    {
         loadSceneKind = sceneKind;
-        loadCallback = callback;
-        //curScene = gameScenes[sceneKind];
-
         SoundMgr.Inst.StopBGM();
 
-        StartCoroutine(LoadAsyncScene());
-    }
+        yield return UIMgr.Inst.MainOverrideUI.LoadSceneUI.ShowCo();
 
-    IEnumerator LoadAsyncScene()
-    {
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(loadSceneKind.ToString());
+        asyncLoad.allowSceneActivation = false;
 
         while (!asyncLoad.isDone)
         {
+            float progress = Mathf.Clamp01(asyncLoad.progress / 0.9f);
+
+            UIMgr.Inst.MainOverrideUI.LoadSceneUI.SetProgress(progress);
+
+            if (asyncLoad.progress >= 0.9f)
+            {
+                yield return new WaitForSeconds(0.2f);
+                asyncLoad.allowSceneActivation = true;
+                UIMgr.Inst.MainOverrideUI.LoadSceneUI.SetProgress(1);
+            }
+
             yield return null;
         }
-        //curScene.DataInitialize(() =>
-        //{
-        //    GC.Collect();
-        //});
-        GC.Collect();
-        //curScene.Init();
 
-        loadCallback?.Invoke();
+        yield return Resources.UnloadUnusedAssets();
+
+        GC.Collect();
 
         curSceneKind = loadSceneKind;
+
+        yield return UIMgr.Inst.MainOverrideUI.LoadSceneUI.HideCo();
     }
 }

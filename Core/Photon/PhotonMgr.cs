@@ -89,6 +89,8 @@ public class PhotonMgr : SingletonPun<PhotonMgr>
     {
         Debug.Log("모든 리전 Ping 테스트 시작...");
 
+        yield return CheckRegionsPing();
+
         foreach (RegionInfo regionInfo in AvailableRegions)
         {
             // AppSettings 설정
@@ -158,5 +160,78 @@ public class PhotonMgr : SingletonPun<PhotonMgr>
 
         return PhotonView.Find(viewId).GetComponent<T>();
     }
+
+
+
+
+    private bool _regionListReceived = false;
+    private RegionHandler _regionHandler;
+
+    public IEnumerator CheckRegionsPing()
+    {
+        Debug.Log("<color=yellow>[Photon]</color> Region 핑 테스트 시작...");
+
+        // 혹시 남은 연결이 있다면 정리
+        if (PhotonNetwork.IsConnected)
+        {
+            PhotonNetwork.Disconnect();
+            yield return new WaitUntil(() => PhotonNetwork.NetworkClientState == ClientState.Disconnected);
+        }
+
+        // AppSettings 준비
+        var appSettings = PhotonNetwork.PhotonServerSettings.AppSettings;
+        appSettings.UseNameServer = true;
+        appSettings.AppVersion = Application.version;
+
+        // PhotonNetwork.NetworkingClient 직접 사용
+        var client = PhotonNetwork.NetworkingClient;
+        client.AppId = appSettings.AppIdRealtime;
+        client.AppVersion = appSettings.AppVersion;
+
+        Debug.Log("<color=yellow>[Photon]</color> NameServer 연결 시도...");
+        client.ConnectToNameServer();
+
+        // 연결 대기
+        yield return new WaitUntil(() => client.State == ClientState.ConnectedToNameServer);
+        Debug.Log("<color=green>[Photon]</color> NameServer 연결 완료!");
+
+        // Region 목록 수신 대기
+        yield return new WaitUntil(() => _regionListReceived && _regionHandler != null);
+        Debug.Log($"<color=yellow>[Photon]</color> 리전 목록 수신 완료 ({_regionHandler.EnabledRegions.Count}개)");
+
+        // 핑 테스트 시작
+        bool isDone = false;
+        _regionHandler.PingMinimumOfRegions((RegionHandler handler) =>
+        {
+            Debug.Log("<color=green>[Photon]</color> 리전 핑 측정 완료");
+
+            foreach (var region in handler.EnabledRegions)
+            {
+                Debug.Log($"[Region] {region.Code} - {region.Ping}ms");
+
+                var found = AvailableRegions.Find(r => r.Code.Equals(region.Code, System.StringComparison.OrdinalIgnoreCase));
+                if (found != null)
+                    found.Ping = region.Ping;
+            }
+
+            // 가장 좋은 리전 저장
+            SelectedRegion = handler.BestRegion?.Code ?? string.Empty;
+            Debug.Log($"<color=cyan>[Best Region]</color> {SelectedRegion} ({handler.BestRegion?.Ping}ms)");
+
+            isDone = true;
+        }, null);
+
+        yield return new WaitUntil(() => isDone);
+        Debug.Log("<color=green>[Photon]</color> 모든 리전 핑 테스트 완료!");
+    }
+
+    // RegionHandler가 도착하면 Photon이 자동으로 이 콜백을 호출함
+    public override void OnRegionListReceived(RegionHandler regionHandler)
+    {
+        _regionHandler = regionHandler;
+        _regionListReceived = true;
+        Debug.Log($"<color=lime>[Photon]</color> OnRegionListReceived() 호출됨: {regionHandler.EnabledRegions.Count}개 리전 수신");
+    }
+
 
 }

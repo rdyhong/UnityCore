@@ -108,15 +108,17 @@ public class ObjectPoolMgr : Singleton<ObjectPoolMgr>, IPunPrefabPool
     public void RecycleAll()
     {
         // 기존 로컬 풀 오브젝트들 회수
-        var keysToProcess = new List<string>(_objPoolUsing.Keys);
-        foreach (string key in keysToProcess)
-        {
-            var objectsToRecycle = new List<GameObject>(_objPoolUsing[key]);
-            foreach (GameObject obj in objectsToRecycle)
-            {
-                Recycle(obj);
-            }
-        }
+        //var keysToProcess = new List<string>(_objPoolUsing.Keys);
+        //foreach (string key in keysToProcess)
+        //{
+        //    var objectsToRecycle = new List<GameObject>(_objPoolUsing[key]);
+        //    foreach (GameObject obj in objectsToRecycle)
+        //    {
+        //        Recycle(obj);
+        //    }
+        //}
+        RecycleAllLocal();
+
 
         // Photon 풀 오브젝트들 회수
         var photonKeysToProcess = new List<string>(_photonPoolUsing.Keys);

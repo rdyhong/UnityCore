@@ -33,22 +33,22 @@ public class PhotonMgr : SingletonPun<PhotonMgr>
     // 사용 가능한 리전 목록
     public List<RegionInfo> AvailableRegions { get; private set; } = new List<RegionInfo>
     {
-       new RegionInfo("asia", "아시아 (Singapore)"),
-    new RegionInfo("au", "호주 (Sydney)"),
-    new RegionInfo("cae", "캐나다 동부 (Montreal)"),
-    //new RegionInfo("cn", "중국 본토 (Shanghai)"),
-    new RegionInfo("eu", "유럽 (Amsterdam)"),
-    new RegionInfo("hk", "홍콩 (Hong Kong)"),
-    new RegionInfo("in", "인도 (Chennai)"),
-    new RegionInfo("jp", "일본 (Tokyo)"),
-    new RegionInfo("za", "남아프리카공화국 (Johannesburg)"),
-    new RegionInfo("sa", "남아메리카 (Sao Paulo)"),
-    new RegionInfo("kr", "한국 (Seoul)"),
-    new RegionInfo("tr", "터키 (Istanbul)"),
-    new RegionInfo("uae", "아랍에미리트 (Dubai)"),
-    new RegionInfo("us", "미국 동부 (Washington D.C.)"),
-    new RegionInfo("usw", "미국 서부 (San José)"),
-    new RegionInfo("ussc", "미국 남중부 (Dallas)")
+    //   new RegionInfo("asia", "아시아 (Singapore)"),
+    //new RegionInfo("au", "호주 (Sydney)"),
+    //new RegionInfo("cae", "캐나다 동부 (Montreal)"),
+    
+    //new RegionInfo("eu", "유럽 (Amsterdam)"),
+    //new RegionInfo("hk", "홍콩 (Hong Kong)"),
+    //new RegionInfo("in", "인도 (Chennai)"),
+    //new RegionInfo("jp", "일본 (Tokyo)"),
+    //new RegionInfo("za", "남아프리카공화국 (Johannesburg)"),
+    //new RegionInfo("sa", "남아메리카 (Sao Paulo)"),
+    //new RegionInfo("kr", "한국 (Seoul)"),
+    //new RegionInfo("tr", "터키 (Istanbul)"),
+    //new RegionInfo("uae", "아랍에미리트 (Dubai)"),
+    //new RegionInfo("us", "미국 동부 (Washington D.C.)"),
+    //new RegionInfo("usw", "미국 서부 (San José)"),
+    //new RegionInfo("ussc", "미국 남중부 (Dallas)")
     };
 
     public static string SelectedRegion = string.Empty; // 기본값
@@ -91,29 +91,29 @@ public class PhotonMgr : SingletonPun<PhotonMgr>
 
         yield return CheckRegionsPing();
 
-        foreach (RegionInfo regionInfo in AvailableRegions)
-        {
-            // AppSettings 설정
-            var appSettings = PhotonNetwork.PhotonServerSettings.AppSettings;
-            appSettings.AppVersion = $"{Application.version}";
-            appSettings.FixedRegion = regionInfo.Code;
-            appSettings.UseNameServer = true;
+        //foreach (RegionInfo regionInfo in AvailableRegions)
+        //{
+        //    // AppSettings 설정
+        //    var appSettings = PhotonNetwork.PhotonServerSettings.AppSettings;
+        //    appSettings.AppVersion = $"{Application.version}";
+        //    appSettings.FixedRegion = regionInfo.Code;
+        //    appSettings.UseNameServer = true;
 
-            PhotonNetwork.ConnectUsingSettings();
+        //    PhotonNetwork.ConnectUsingSettings();
 
-            yield return PhotonNetwork.IsConnectedAndReady;
-            yield return new WaitForSeconds(1);
+        //    yield return PhotonNetwork.IsConnectedAndReady;
+        //    yield return new WaitForSeconds(1);
 
-            regionInfo.Ping = PhotonNetwork.GetPing();
-            Debug.Log("Ping 테스트 완료, 연결 해제 중...");
-            PhotonNetwork.Disconnect();
+        //    regionInfo.Ping = PhotonNetwork.GetPing();
+        //    Debug.Log("Ping 테스트 완료, 연결 해제 중...");
+        //    PhotonNetwork.Disconnect();
 
-            yield return new WaitUntil(() => PhotonNetwork.NetworkClientState == ClientState.Disconnected);
+        //    yield return new WaitUntil(() => PhotonNetwork.NetworkClientState == ClientState.Disconnected);
 
-            Debug.Log($"{regionInfo.Name}-{regionInfo.Ping}-테스트 완료");
+        //    Debug.Log($"{regionInfo.Name}-{regionInfo.Ping}-테스트 완료");
 
-            yield return null;
-        }
+        //    yield return null;
+        //}
 
         Debug.Log("Ping 테스트 완료");
     }
@@ -199,6 +199,8 @@ public class PhotonMgr : SingletonPun<PhotonMgr>
         yield return new WaitUntil(() => _regionListReceived && _regionHandler != null);
         Debug.Log($"<color=yellow>[Photon]</color> 리전 목록 수신 완료 ({_regionHandler.EnabledRegions.Count}개)");
 
+        AvailableRegions.Clear();
+
         // 핑 테스트 시작
         bool isDone = false;
         _regionHandler.PingMinimumOfRegions((RegionHandler handler) =>
@@ -208,20 +210,29 @@ public class PhotonMgr : SingletonPun<PhotonMgr>
             foreach (var region in handler.EnabledRegions)
             {
                 Debug.Log($"[Region] {region.Code} - {region.Ping}ms");
-
+                RegionInfo info = new RegionInfo(region.Code, "");
+                info.Ping = region.Ping;
+                AvailableRegions.Add(info);
                 var found = AvailableRegions.Find(r => r.Code.Equals(region.Code, System.StringComparison.OrdinalIgnoreCase));
                 if (found != null)
+                {
                     found.Ping = region.Ping;
+                }
             }
 
             // 가장 좋은 리전 저장
-            SelectedRegion = handler.BestRegion?.Code ?? string.Empty;
-            Debug.Log($"<color=cyan>[Best Region]</color> {SelectedRegion} ({handler.BestRegion?.Ping}ms)");
+            //SelectedRegion = handler.BestRegion?.Code ?? string.Empty;
+            string bestRegion = handler.BestRegion?.Code ?? string.Empty;
+            Debug.Log($"<color=cyan>[Best Region]</color> {bestRegion} ({handler.BestRegion?.Ping}ms)");
 
             isDone = true;
         }, null);
 
         yield return new WaitUntil(() => isDone);
+
+        PhotonNetwork.Disconnect();
+        yield return new WaitUntil(() => PhotonNetwork.NetworkClientState == ClientState.Disconnected);
+
         Debug.Log("<color=green>[Photon]</color> 모든 리전 핑 테스트 완료!");
     }
 

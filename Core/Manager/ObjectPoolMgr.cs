@@ -46,6 +46,7 @@ public class ObjectPoolMgr : Singleton<ObjectPoolMgr>, IPunPrefabPool
         {
             GameObject prefab = Resources.Load<GameObject>(prefabId);
             obj = Object.Instantiate(prefab, position, rotation);
+            obj.name.Replace("(Clone)", "").Trim();
             Debug.Log("Spawn new");
         }
 
@@ -79,7 +80,7 @@ public class ObjectPoolMgr : Singleton<ObjectPoolMgr>, IPunPrefabPool
 
         gameObject.SetActive(false);
         gameObject.transform.SetParent(_parent);
-        gameObject.transform.position = new Vector3(0, 2000, 0); // 위치 초기화
+        gameObject.transform.position = new Vector3(0, -1000, 0); // 위치 초기화
 
         var poolingObj = gameObject.GetComponent<IPoolingObject>();
         poolingObj?.OnRecycle();
@@ -97,6 +98,7 @@ public class ObjectPoolMgr : Singleton<ObjectPoolMgr>, IPunPrefabPool
         for (int i = 0; i < count; i++)
         {
             GameObject obj = Object.Instantiate(prefab);
+            obj.name.Replace("(Clone)", "").Trim();
             obj.SetActive(false);
             obj.transform.SetParent(_parent);
             _photonPool[prefabId].Enqueue(obj);
@@ -107,30 +109,10 @@ public class ObjectPoolMgr : Singleton<ObjectPoolMgr>, IPunPrefabPool
     #region ===== 전체 회수 기능 =====
     public void RecycleAll()
     {
-        // 기존 로컬 풀 오브젝트들 회수
-        //var keysToProcess = new List<string>(_objPoolUsing.Keys);
-        //foreach (string key in keysToProcess)
-        //{
-        //    var objectsToRecycle = new List<GameObject>(_objPoolUsing[key]);
-        //    foreach (GameObject obj in objectsToRecycle)
-        //    {
-        //        Recycle(obj);
-        //    }
-        //}
         RecycleAllLocal();
 
-
         // Photon 풀 오브젝트들 회수
-        var photonKeysToProcess = new List<string>(_photonPoolUsing.Keys);
-        foreach (string key in photonKeysToProcess)
-        {
-            var objectsToRecycle = new List<GameObject>(_photonPoolUsing[key]);
-            foreach (GameObject obj in objectsToRecycle)
-            {
-                //PhotonNetwork.Destroy(obj);
-                Destroy(obj); // Photon 풀의 Destroy 메서드 사용
-            }
-        }
+        RecycleAllPhoton();
     }
 
     // 로컬 풀만 회수
@@ -156,6 +138,7 @@ public class ObjectPoolMgr : Singleton<ObjectPoolMgr>, IPunPrefabPool
             var objectsToRecycle = new List<GameObject>(_photonPoolUsing[key]);
             foreach (GameObject obj in objectsToRecycle)
             {
+                //PhotonNetwork.Destroy(obj);
                 Destroy(obj);
             }
         }

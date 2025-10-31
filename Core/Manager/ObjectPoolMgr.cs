@@ -107,12 +107,18 @@ public class ObjectPoolMgr : Singleton<ObjectPoolMgr>, IPunPrefabPool
     #endregion
 
     #region ===== 전체 회수 기능 =====
-    public void RecycleAll()
+
+    public void RecycleAll(bool isFromMaster = false)
     {
+        if(isFromMaster && !PhotonNetwork.IsMasterClient)
+        {
+            return;
+        }
+
         RecycleAllLocal();
 
         // Photon 풀 오브젝트들 회수
-        RecycleAllPhoton();
+        RecycleAllPhoton(isFromMaster);
     }
 
     // 로컬 풀만 회수
@@ -130,7 +136,7 @@ public class ObjectPoolMgr : Singleton<ObjectPoolMgr>, IPunPrefabPool
     }
 
     // Photon 풀만 회수
-    public void RecycleAllPhoton()
+    public void RecycleAllPhoton(bool isFromMaster = false)
     {
         var photonKeysToProcess = new List<string>(_photonPoolUsing.Keys);
         foreach (string key in photonKeysToProcess)
@@ -138,10 +144,25 @@ public class ObjectPoolMgr : Singleton<ObjectPoolMgr>, IPunPrefabPool
             var objectsToRecycle = new List<GameObject>(_photonPoolUsing[key]);
             foreach (GameObject obj in objectsToRecycle)
             {
-                //PhotonNetwork.Destroy(obj);
-                Destroy(obj);
+                if(isFromMaster) PhotonNetwork.Destroy(obj);
+                else Destroy(obj);
             }
         }
+    }
+
+    public bool IsAllRecycled()
+    {
+        bool result = true;
+        var photonKeysToProcess = new List<string>(_photonPoolUsing.Keys);
+        foreach (string key in photonKeysToProcess)
+        {
+            if(_photonPoolUsing[key].Count > 0)
+            {
+                result = false;
+            }
+        }
+
+        return result;
     }
 
     // 풀 상태 확인용 디버그 메서드

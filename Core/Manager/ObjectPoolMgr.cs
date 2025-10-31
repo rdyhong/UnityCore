@@ -50,7 +50,7 @@ public class ObjectPoolMgr : Singleton<ObjectPoolMgr>, IPunPrefabPool
             Debug.Log("Spawn new");
         }
 
-        obj.name = prefabId.Replace("(Clone)", "").Trim();
+        obj.name = prefabId;//.Replace("(Clone)", "").Trim();
 
         // Photon 사용 중인 오브젝트 추적에 추가
         if (!_photonPoolUsing.ContainsKey(prefabId))
@@ -112,10 +112,10 @@ public class ObjectPoolMgr : Singleton<ObjectPoolMgr>, IPunPrefabPool
 
     public void RecycleAll(bool isFromMaster = false)
     {
-        if(isFromMaster && !PhotonNetwork.IsMasterClient)
-        {
-            return;
-        }
+        //if(isFromMaster && !PhotonNetwork.IsMasterClient)
+        //{
+        //    return;
+        //}
 
         RecycleAllLocal();
 
@@ -146,8 +146,14 @@ public class ObjectPoolMgr : Singleton<ObjectPoolMgr>, IPunPrefabPool
             var objectsToRecycle = new List<GameObject>(_photonPoolUsing[key]);
             foreach (GameObject obj in objectsToRecycle)
             {
-                if(isFromMaster) PhotonNetwork.Destroy(obj);
-                else Destroy(obj);
+                if (isFromMaster)
+                {
+                    if(PhotonNetwork.IsMasterClient) PhotonNetwork.Destroy(obj);
+                }
+                else
+                {
+                    Destroy(obj);
+                }
             }
         }
     }

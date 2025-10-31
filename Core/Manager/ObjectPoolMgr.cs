@@ -46,9 +46,11 @@ public class ObjectPoolMgr : Singleton<ObjectPoolMgr>, IPunPrefabPool
         {
             GameObject prefab = Resources.Load<GameObject>(prefabId);
             obj = Object.Instantiate(prefab, position, rotation);
-            obj.name.Replace("(Clone)", "").Trim();
+            
             Debug.Log("Spawn new");
         }
+
+        obj.name = prefabId.Replace("(Clone)", "").Trim();
 
         // Photon 사용 중인 오브젝트 추적에 추가
         if (!_photonPoolUsing.ContainsKey(prefabId))
@@ -98,7 +100,7 @@ public class ObjectPoolMgr : Singleton<ObjectPoolMgr>, IPunPrefabPool
         for (int i = 0; i < count; i++)
         {
             GameObject obj = Object.Instantiate(prefab);
-            obj.name.Replace("(Clone)", "").Trim();
+            obj.name = prefabId;
             obj.SetActive(false);
             obj.transform.SetParent(_parent);
             _photonPool[prefabId].Enqueue(obj);
@@ -158,6 +160,7 @@ public class ObjectPoolMgr : Singleton<ObjectPoolMgr>, IPunPrefabPool
         {
             if(_photonPoolUsing[key].Count > 0)
             {
+                Debug.LogWarning($"{key},{_photonPoolUsing[key].Count}");
                 result = false;
             }
         }

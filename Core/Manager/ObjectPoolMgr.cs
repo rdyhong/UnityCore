@@ -110,7 +110,7 @@ public class ObjectPoolMgr : Singleton<ObjectPoolMgr>, IPunPrefabPool
 
     #region ===== 전체 회수 기능 =====
 
-    public void RecycleAll(bool isFromMaster = false)
+    public void RecycleAll(bool onGameOver = false)
     {
         //if(isFromMaster && !PhotonNetwork.IsMasterClient)
         //{
@@ -120,7 +120,7 @@ public class ObjectPoolMgr : Singleton<ObjectPoolMgr>, IPunPrefabPool
         RecycleAllLocal();
 
         // Photon 풀 오브젝트들 회수
-        RecycleAllPhoton(isFromMaster);
+        RecycleAllPhoton(onGameOver);
     }
 
     // 로컬 풀만 회수
@@ -138,7 +138,7 @@ public class ObjectPoolMgr : Singleton<ObjectPoolMgr>, IPunPrefabPool
     }
 
     // Photon 풀만 회수
-    public void RecycleAllPhoton(bool isFromMaster = false)
+    public void RecycleAllPhoton(bool onGameOver = false)
     {
         var photonKeysToProcess = new List<string>(_photonPoolUsing.Keys);
         foreach (string key in photonKeysToProcess)
@@ -146,9 +146,17 @@ public class ObjectPoolMgr : Singleton<ObjectPoolMgr>, IPunPrefabPool
             var objectsToRecycle = new List<GameObject>(_photonPoolUsing[key]);
             foreach (GameObject obj in objectsToRecycle)
             {
-                if (isFromMaster)
+                if (onGameOver)
                 {
-                    if(PhotonNetwork.IsMasterClient) PhotonNetwork.Destroy(obj);
+                    bool isObjectOwner = obj.GetComponent<PhotonView>().Owner == PhotonNetwork.LocalPlayer;
+                    if (isObjectOwner)
+                    {
+                        PhotonNetwork.Destroy(obj);
+                    }
+                    //else if (PhotonNetwork.IsMasterClient)
+                    //{
+                    //    PhotonNetwork.Destroy(obj);
+                    //}
                 }
                 else
                 {

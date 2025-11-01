@@ -1,3 +1,4 @@
+#if UNITY_EDITOR
 using UnityEngine;
 using UnityEditor;
 
@@ -75,3 +76,4 @@ public class RR95Tools
         Debug.Log("<color=yellow>[PlayerPrefs]</color> 저장된 키 목록을 확인하려면 코드에 키 목록을 추가하세요.");
     }
 }
+#endif

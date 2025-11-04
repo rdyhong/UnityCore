@@ -24,6 +24,13 @@ public class GameMgr : Singleton<GameMgr>
         Application.runInBackground = false;
     }
 
+    public bool IsDev()
+    {
+#if UNITY_EDITOR
+        return true;
+#endif
+        return false;
+    }
 
     public void ExitGame()
     {

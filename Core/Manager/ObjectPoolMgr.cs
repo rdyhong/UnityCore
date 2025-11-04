@@ -284,6 +284,7 @@ public class ObjectPoolMgr : Singleton<ObjectPoolMgr>, IPunPrefabPool
             go.transform.SetParent(_parent);
             go.name = path;
             go.SetActive(false);
+            _objPool[path].Add(go);
         }
     }
 

@@ -9,7 +9,7 @@ using WebSocketSharp;
 
 public enum ELobbyType
 {
-    QuickMatch = 0,
+    NormalMatch = 0,
     CustomMatch,
     RankMatch
 }

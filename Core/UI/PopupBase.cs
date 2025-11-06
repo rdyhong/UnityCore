@@ -18,7 +18,7 @@ public class PopupBase : MonoBehaviourPunCallbacks
 
     public virtual void Initialize()
     {
-        _btnClose.onClick.AddListener(OnClickCloseButton);
+        _btnClose?.onClick.AddListener(OnClickCloseButton);
 
         gameObject.SetActive(false);
     }

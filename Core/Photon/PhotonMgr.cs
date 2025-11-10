@@ -31,25 +31,7 @@ public class RegionInfo
 public class PhotonMgr : SingletonPun<PhotonMgr>
 {
     // 사용 가능한 리전 목록
-    public List<RegionInfo> AvailableRegions { get; private set; } = new List<RegionInfo>
-    {
-    //   new RegionInfo("asia", "아시아 (Singapore)"),
-    //new RegionInfo("au", "호주 (Sydney)"),
-    //new RegionInfo("cae", "캐나다 동부 (Montreal)"),
-    
-    //new RegionInfo("eu", "유럽 (Amsterdam)"),
-    //new RegionInfo("hk", "홍콩 (Hong Kong)"),
-    //new RegionInfo("in", "인도 (Chennai)"),
-    //new RegionInfo("jp", "일본 (Tokyo)"),
-    //new RegionInfo("za", "남아프리카공화국 (Johannesburg)"),
-    //new RegionInfo("sa", "남아메리카 (Sao Paulo)"),
-    //new RegionInfo("kr", "한국 (Seoul)"),
-    //new RegionInfo("tr", "터키 (Istanbul)"),
-    //new RegionInfo("uae", "아랍에미리트 (Dubai)"),
-    //new RegionInfo("us", "미국 동부 (Washington D.C.)"),
-    //new RegionInfo("usw", "미국 서부 (San José)"),
-    //new RegionInfo("ussc", "미국 남중부 (Dallas)")
-    };
+    public List<RegionInfo> AvailableRegions { get; private set; } = new List<RegionInfo>();
 
     public static string SelectedRegion = string.Empty; // 기본값
 
@@ -90,30 +72,6 @@ public class PhotonMgr : SingletonPun<PhotonMgr>
         Debug.Log("모든 리전 Ping 테스트 시작...");
 
         yield return CheckRegionsPing();
-
-        //foreach (RegionInfo regionInfo in AvailableRegions)
-        //{
-        //    // AppSettings 설정
-        //    var appSettings = PhotonNetwork.PhotonServerSettings.AppSettings;
-        //    appSettings.AppVersion = $"{Application.version}";
-        //    appSettings.FixedRegion = regionInfo.Code;
-        //    appSettings.UseNameServer = true;
-
-        //    PhotonNetwork.ConnectUsingSettings();
-
-        //    yield return PhotonNetwork.IsConnectedAndReady;
-        //    yield return new WaitForSeconds(1);
-
-        //    regionInfo.Ping = PhotonNetwork.GetPing();
-        //    Debug.Log("Ping 테스트 완료, 연결 해제 중...");
-        //    PhotonNetwork.Disconnect();
-
-        //    yield return new WaitUntil(() => PhotonNetwork.NetworkClientState == ClientState.Disconnected);
-
-        //    Debug.Log($"{regionInfo.Name}-{regionInfo.Ping}-테스트 완료");
-
-        //    yield return null;
-        //}
 
         Debug.Log("Ping 테스트 완료");
     }
